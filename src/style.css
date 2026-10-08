@@ -94,3 +94,7 @@ aside,
 .reservation {
   margin: 0 1em;
 }
+
+main > h2 {
+  text-align: center;
+}
