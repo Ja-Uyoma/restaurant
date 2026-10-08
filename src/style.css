@@ -98,3 +98,50 @@ aside,
 main > h2 {
   text-align: center;
 }
+
+.reservation {
+  h2 {
+    text-align: left;
+  }
+
+  form,
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+  }
+
+  input,
+  button {
+    width: 100%;
+    border-radius: 0.25em;
+    padding: 0.25em 0.75em;
+    font-size: medium;
+  }
+
+  input {
+    padding-left: 0.5em;
+  }
+
+  label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (min-width: 768px) {
+    h2 {
+      text-align: center;
+    }
+
+    div {
+      flex-direction: row;
+    }
+  }
+}
