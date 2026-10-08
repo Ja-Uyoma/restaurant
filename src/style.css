@@ -87,3 +87,10 @@ button {
     display: block;
   }
 }
+
+.cta,
+main,
+aside,
+.reservation {
+  margin: 0 1em;
+}
