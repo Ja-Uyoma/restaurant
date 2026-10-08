@@ -19,4 +19,41 @@
 
 body {
   margin: 0;
+  background-color: var(--light-gray);
+}
+
+header,
+footer,
+button {
+  background-color: var(--forest-green);
+  color: white;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+
+  @media (max-width: 768px) {
+    display: none;
+
+    &.open {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.menu-toggle {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 }

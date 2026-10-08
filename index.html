@@ -8,15 +8,17 @@
     <title>restaurant</title>
   </head>
   <body>
-    <header>
-      <p>The Ember Table</p>
+    <header class="navbar">
+      <p class="logo"><a href="#">The Ember Table</a></p>
 
-      <nav>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/reservation">Reservation</a></li>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+
+      <nav aria-labelledby="primary-navigation">
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#reservation">Reservation</a></li>
         </ul>
       </nav>
     </header>
