@@ -108,6 +108,15 @@ main > h2 {
   }
 }
 
+.menu-item-description p:first-child {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.menu-item-description p:last-child {
+  font-size: 11px;
+}
+
 .reservation {
   h2 {
     text-align: left;
