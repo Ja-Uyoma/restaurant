@@ -99,6 +99,15 @@ main > h2 {
   text-align: center;
 }
 
+.menu-grid {
+  display: grid;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+}
+
 .reservation {
   h2 {
     text-align: left;
