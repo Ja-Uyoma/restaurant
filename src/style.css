@@ -104,6 +104,53 @@ main > h2 {
   text-align: center;
 }
 
+/* Call-to-action */
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+
+  /* Control the section's dimensions */
+  height: 250px;
+  padding: 3rem 1.5rem;
+
+  /* Background image */
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("./assets/call-to-action.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+}
+
+.cta h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.cta p {
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.cta button {
+  padding: 0.9rem 1.8rem;
+  border: none;
+  border-radius: 1.5em;
+  background-color: var(--forest-green);
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
 /* Menu */
 
 .menu-grid {
