@@ -63,6 +63,16 @@ button {
   color: white;
 }
 
+.cta,
+main,
+aside,
+.reservation,
+footer {
+  padding: 0 1em;
+}
+
+/* Header */
+
 .navbar {
   display: flex;
   align-items: center;
@@ -90,18 +100,6 @@ button {
   @media (max-width: 768px) {
     display: block;
   }
-}
-
-.cta,
-main,
-aside,
-.reservation,
-footer {
-  padding: 0 1em;
-}
-
-main > h2 {
-  text-align: center;
 }
 
 /* Call-to-action */
@@ -151,7 +149,11 @@ main > h2 {
   cursor: pointer;
 }
 
-/* Menu */
+/* Main & Menu */
+
+main > h2 {
+  text-align: center;
+}
 
 .menu-grid {
   display: grid;
