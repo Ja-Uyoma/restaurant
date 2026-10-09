@@ -208,6 +208,7 @@ figure {
 
 /* Footer */
 footer {
+  margin-top: 1.5em;
   padding: 1em 1em;
   display: flex;
   flex-direction: column;
