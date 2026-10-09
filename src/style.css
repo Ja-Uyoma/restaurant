@@ -102,6 +102,21 @@ footer {
   }
 } */
 
+div.header {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: var(--forest-green);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1 1 100%;
+}
+
 .page-header {
   padding: 0.4em 1em;
   background-color: var(--forest-green);
@@ -118,49 +133,29 @@ h1 {
 }
 
 nav.menu {
-  position: relative;
+  flex: 1 1 100%;
 }
 
 .menu-toggle {
-  position: absolute;
-  top: -1.2em;
-  right: 0.1em;
-
+  display: block;
   border: 0;
   background-color: transparent;
-
-  font-size: 3em;
-  width: 1em;
-  height: 1em;
-  line-height: 0.4;
-  text-indent: 5em;
-  white-space: nowrap;
-  overflow: hidden;
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
 
   @media (min-width: 768px) {
     display: none;
   }
 }
 
-.menu-toggle::after {
-  position: absolute;
-  top: 0.2em;
-  left: 0.2em;
-  display: block;
-  content: "\2261";
-  text-indent: 0;
-}
-
 .menu-dropdown {
   display: none;
-  position: absolute;
-  right: 0;
-  left: 0;
   margin: 0;
 
   @media (min-width: 768px) {
     display: block;
-    position: static;
   }
 }
 
@@ -181,9 +176,19 @@ nav.menu {
     border: 0;
     padding-inline: 1em;
 
-    .nav-menu > li {
+    > li {
       flex: 1;
     }
+  }
+}
+
+@media (min-width: 768px) {
+  .header-top {
+    flex: 0 0 auto;
+  }
+
+  nav.menu {
+    flex: 1 1 auto;
   }
 }
 

@@ -3,5 +3,6 @@ const mainMenu = document.querySelector("#main-menu");
 
 button.addEventListener("click", (event) => {
   event.preventDefault();
-  mainMenu.classList.toggle("is-open");
+  const isOpen = mainMenu.classList.toggle("is-open");
+  button.setAttribute("aria-expanded", String(isOpen));
 });
