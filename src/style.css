@@ -108,6 +108,12 @@ main > h2 {
   }
 }
 
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
 .menu-item-description p:first-child {
   font-size: 13px;
   font-weight: bold;
