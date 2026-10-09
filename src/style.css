@@ -91,13 +91,16 @@ button {
 .cta,
 main,
 aside,
-.reservation {
-  margin: 0 1em;
+.reservation,
+footer {
+  padding: 0 1em;
 }
 
 main > h2 {
   text-align: center;
 }
+
+/* Menu */
 
 .menu-grid {
   display: grid;
@@ -154,6 +157,8 @@ figure {
   font-weight: bold;
 }
 
+/* Reservation */
+
 .reservation {
   h2 {
     text-align: left;
@@ -199,4 +204,53 @@ figure {
       flex-direction: row;
     }
   }
+}
+
+/* Footer */
+footer {
+  padding: 1em 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.logo {
+  flex: 1;
+}
+
+.logo h4 {
+  color: var(--ivory);
+  font-size: 15px;
+  margin: 0.5em 0;
+}
+
+.logo p {
+  color: var(--light-gray);
+  font-size: 10px;
+  font-weight: bold;
+  margin: 0.25em 0;
+}
+
+.info {
+  flex: 2;
+  display: flex;
+  justify-content: space-around;
+  gap: 0.675em;
+}
+
+.info h5 {
+  color: var(--ivory);
+  font-size: 14px;
+  margin: 0.5em 0;
+}
+
+.info p {
+  color: var(--light-gray);
+  font-size: 10px;
+  font-weight: bold;
+  margin: 0.25em 0;
 }
