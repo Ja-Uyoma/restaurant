@@ -240,7 +240,19 @@ main > h2 {
   display: grid;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(4, auto);
+    row-gap: 0.25em;
+
+    > section {
+      display: grid;
+      grid-row: span 4;
+      grid-template-rows: subgrid;
+    }
+
+    .menu {
+      display: contents;
+    }
   }
 }
 
@@ -252,14 +264,17 @@ main > h2 {
 
 .menu-item {
   display: flex;
+  align-items: center;
+  gap: 0.5em;
   background-color: var(--ivory);
   border-radius: 0.375em;
   padding: 0.25em;
 }
 
-figure {
-  flex-basis: 2 / 6;
+.menu-item figure {
+  flex: 0 0 28%;
   aspect-ratio: 4 / 3;
+  margin: 0;
   overflow: hidden;
   border-radius: 12px;
 }
@@ -272,7 +287,8 @@ figure {
 }
 
 .menu-item-description {
-  flex-basis: 3/6;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .menu-item-description p:first-child {
@@ -285,7 +301,7 @@ figure {
 }
 
 .price {
-  flex-basis: 1 / 6;
+  flex: 0 0 auto;
   font-size: 14px;
   font-weight: bold;
 }
