@@ -69,10 +69,9 @@ button {
 
 .cta,
 main,
-aside,
 .reservation,
 footer {
-  padding: 0 1em;
+  padding: 0 1.25em;
 }
 
 /* Header */
@@ -321,7 +320,7 @@ aside {
   margin-top: 1.5em;
   text-align: left;
   background-color: var(--light-gray);
-  padding: 1.5em 0;
+  padding: 1.5em 1.25em;
 
   @media (min-width: 768px) {
     display: flex;
