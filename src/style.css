@@ -380,7 +380,28 @@ aside p {
   }
 
   input {
-    padding-left: 0.5em;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 2.75rem;
+    border: 1px solid #aab8ad;
+    background-color: var(--ivory);
+    color: var(--charcoal);
+    font: inherit;
+    padding-inline: 0.75em;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  input::placeholder {
+    color: #68756c;
+    opacity: 1;
+  }
+
+  input:focus-visible {
+    border-color: var(--forest-green);
+    outline: 3px solid rgb(27 94 59 / 20%);
+    outline-offset: 1px;
   }
 
   label {
