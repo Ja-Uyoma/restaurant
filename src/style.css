@@ -139,7 +139,7 @@ nav.menu {
   padding-left: 0;
   border: 1px solid #ccc;
   list-style: none;
-  background-color: #000;
+  background-color: var(--forest-green);
   color: #fff;
 
   @media (min-width: 768px) {
