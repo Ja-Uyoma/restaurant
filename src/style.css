@@ -1,5 +1,5 @@
 :root {
-  --forest-green: #1b5e3b;
+  --forest-green: #084438;
   --ivory: #f7f5ee;
   --charcoal: #333333;
   --light-gray: #e0e0e0;
@@ -15,6 +15,10 @@
 ::before,
 ::after {
   box-sizing: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @font-face {
