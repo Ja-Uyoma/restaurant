@@ -290,15 +290,19 @@ main > h2 {
 .menu-item-description {
   flex: 1 1 0;
   min-width: 0;
+  padding-bottom: 0.5em;
 }
 
 .menu-item-description p:first-child {
   font-size: 13px;
   font-weight: bold;
+  line-height: 1.1;
+  margin-bottom: 0.25em;
 }
 
 .menu-item-description p:last-child {
   font-size: 11px;
+  line-height: 1.1;
 }
 
 .price {
