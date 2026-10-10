@@ -238,7 +238,7 @@ main > h2 {
 
 .menu-grid {
   display: grid;
-  gap: 0.5em;
+  gap: 0.5em 1em;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -309,6 +309,7 @@ main > h2 {
 /* About Us */
 
 aside {
+  margin-top: 1.5em;
   text-align: left;
 
   @media (min-width: 768px) {
