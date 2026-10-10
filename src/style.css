@@ -178,12 +178,27 @@ nav.menu {
   display: block;
   padding: 0.8em 1em;
   color: #fff;
-  font-weight: normal;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0.25em;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
 
   @media (min-width: 768px) {
-    padding: 0.3em;
+    padding: 0.45em 0.75em;
     text-align: center;
   }
+}
+
+.nav-menu > li > a:hover {
+  background-color: var(--ivory);
+  color: var(--forest-green);
+}
+
+.nav-menu > li > a:focus-visible {
+  outline: 2px solid var(--ivory);
+  outline-offset: 2px;
 }
 
 /* Call-to-action */
