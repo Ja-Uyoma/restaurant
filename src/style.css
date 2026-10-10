@@ -46,7 +46,7 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--light-gray);
+  background-color: var(--ivory);
   font-family: "Inter", "Open Sans", sans-serif;
 }
 
@@ -270,7 +270,7 @@ main > h2 {
   display: flex;
   align-items: baseline;
   gap: 0.5em;
-  background-color: var(--ivory);
+  background-color: white;
   border-radius: 0.375em;
   padding: 0.25em;
 }
@@ -320,6 +320,8 @@ main > h2 {
 aside {
   margin-top: 1.5em;
   text-align: left;
+  background-color: var(--light-gray);
+  padding: 1.5em 0;
 
   @media (min-width: 768px) {
     display: flex;
