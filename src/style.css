@@ -98,7 +98,7 @@ div.header {
 }
 
 h1 {
-  color: #333;
+  color: #fff;
   font-size: 1.5rem;
   margin-block: 0.2em;
 }
@@ -209,7 +209,7 @@ nav.menu {
   color: white;
 }
 
-.cta h1 {
+.cta h2 {
   margin: 0;
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
