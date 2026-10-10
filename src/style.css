@@ -218,7 +218,7 @@ nav.menu {
   /* Background image */
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-    url("./assets/images/call-to-action.jpg");
+    url("./assets/images/call-to-action.webp");
 
   background-size: cover;
   background-position: center;
