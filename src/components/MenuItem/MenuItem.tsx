@@ -15,6 +15,8 @@ export function MenuItem(props: Readonly<MenuItemData>) {
         <img
           src={props.imgUrl}
           alt={props.imgAlt}
+          loading="lazy"
+          decoding="async"
           className="menu-item__image"
         />
       </figure>
