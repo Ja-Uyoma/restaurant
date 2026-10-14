@@ -2,6 +2,7 @@ import "./style.css";
 import { MenuPage } from "./components/MenuPage/MenuPage";
 import { Hero } from "./components/Hero/Hero";
 import { AboutUs } from "./components/AboutUs/AboutUs";
+import { Reservation } from "./components/Reservation/Reservation";
 
 function App() {
   return (
@@ -53,34 +54,7 @@ function App() {
 
       <AboutUs id="about-us" />
 
-      <section className="reservation" id="reservation">
-        <h2>Make a Reservation</h2>
-
-        <form action="/" method="post">
-          <div>
-            <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Name" />
-
-            <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Email" />
-
-            <label htmlFor="date">Date</label>
-            <input type="date" name="date" id="date" placeholder="Date" />
-
-            <label htmlFor="guests">Guests</label>
-            <input
-              type="number"
-              name="guests"
-              id="guests"
-              placeholder="Guests"
-              min="1"
-              max="15"
-            />
-          </div>
-
-          <button>Reserve</button>
-        </form>
-      </section>
+      <Reservation id="reservation" />
 
       <footer>
         <section className="logo">
