@@ -1,5 +1,10 @@
+.menu-page {
+  padding: 0 1.25em;
+}
+
 .menu-page__title {
   text-align: center;
+  font-size: 1.5rem;
 }
 
 .menu-page__grid {

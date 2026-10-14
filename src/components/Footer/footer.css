@@ -1,4 +1,8 @@
 .site-footer {
+  --forest-green: #084438;
+  background-color: var(--forest-green);
+  color: #fff;
+
   margin-top: 1.5em;
   padding: 1em 1em;
 

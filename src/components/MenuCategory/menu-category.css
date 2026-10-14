@@ -6,6 +6,10 @@
   }
 }
 
+.menu-category__title {
+  font-size: 1.25rem;
+}
+
 .menu-category__items {
   display: flex;
   flex-direction: column;

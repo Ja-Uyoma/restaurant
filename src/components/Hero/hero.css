@@ -26,6 +26,8 @@
 
 .hero__name {
   margin: 0;
+
+  font-size: 1.5rem;
 }
 
 .hero__description {
@@ -34,6 +36,8 @@
 }
 
 .hero__button {
+  --forest-green: #084438;
+
   padding: 0.9rem 1.8rem;
   background-color: var(--forest-green);
 

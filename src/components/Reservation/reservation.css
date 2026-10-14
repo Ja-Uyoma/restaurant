@@ -1,5 +1,10 @@
+.reservation {
+  padding: 0 1.25em;
+}
+
 .reservation__title {
   text-align: left;
+  font-size: 1.5rem;
 
   @media (min-width: 768px) {
     text-align: center;
@@ -29,6 +34,13 @@ input,
 
   border-radius: 0.25em;
   font-size: medium;
+}
+
+button {
+  --forest-green: #084438;
+
+  background-color: var(--forest-green);
+  color: #fff;
 }
 
 input {
