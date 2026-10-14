@@ -256,11 +256,11 @@ nav.menu {
 
 /* Main & Menu */
 
-main > h2 {
+.menu-page__title {
   text-align: center;
 }
 
-.menu-grid {
+.menu-page__grid {
   display: grid;
   gap: 0.5em 1em;
 

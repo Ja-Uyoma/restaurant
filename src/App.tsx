@@ -47,10 +47,10 @@ function App() {
         <button>Reserve a Table</button>
       </div>
 
-      <main id="menu">
-        <h2>Our Menu</h2>
+      <main id="menu" className="menu-page">
+        <h2 className="menu-page__title">Our Menu</h2>
 
-        <div className="menu-grid">
+        <div className="menu-page__grid">
           <section className="menu-category">
             <h3 className="menu-category__title">Starters</h3>
 
