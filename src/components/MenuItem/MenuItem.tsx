@@ -1,6 +1,6 @@
 import "./menu-item.css";
 
-type MenuItemProps = {
+export type MenuItemData = {
   imgUrl: string;
   imgAlt: string;
   itemName: string;
@@ -8,7 +8,7 @@ type MenuItemProps = {
   itemPrice: number;
 };
 
-export function MenuItem(props: MenuItemProps) {
+export function MenuItem(props: MenuItemData) {
   return (
     <>
       <article className="menu-item">
@@ -23,7 +23,7 @@ export function MenuItem(props: MenuItemProps) {
           <p className="menu-item__name">{props.itemName}</p>
           <p className="menu-item__description">{props.itemDescription}</p>
         </div>
-        <p className="menu-item__price">${props.itemPrice}</p>
+        <p className="menu-item__price">${props.itemPrice.toFixed(2)}</p>
       </article>
     </>
   );
