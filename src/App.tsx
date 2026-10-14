@@ -1,5 +1,6 @@
 import "./style.css";
 import { MenuPage } from "./components/MenuPage/MenuPage";
+import { Hero } from "./components/Hero/Hero";
 
 function App() {
   return (
@@ -40,13 +41,12 @@ function App() {
         </nav>
       </div>
 
-      <div className="cta" id="home">
-        <div>
-          <h2>Bella Tavola</h2>
-          <p>Authentic Italian Cuisine</p>
-        </div>
-        <button>Reserve a Table</button>
-      </div>
+      <Hero
+        id="home"
+        name="Bella Tavola"
+        description="Authentic Italian Cuisine"
+        cta="Reserve a Table"
+      />
 
       <MenuPage title="Our Menu" />
 
