@@ -1,0 +1,131 @@
+.site-header {
+  --forest-green: #084438;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: var(--forest-green);
+}
+
+.site-header__top {
+  flex: 1 1 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (min-width: 768px) {
+    flex: 0 0 auto;
+  }
+}
+
+.site-header__title {
+  --forest-green: #084438;
+
+  color: #fff;
+  background-color: var(--forest-green);
+
+  margin-block: 0.2em;
+  padding: 0.4em 1em;
+
+  @media (min-width: 768px) {
+    padding: 1em;
+  }
+}
+
+.site-header__menu-toggle {
+  display: block;
+  border: 0;
+  background-color: transparent;
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.site-header__navigation {
+  flex: 1 1 100%;
+
+  @media (min-width: 768px) {
+    flex: 1 1 auto;
+  }
+}
+
+.site-header__nav-list {
+  --forest-green: #084438;
+
+  margin: 0;
+  padding-left: 0;
+  border: 1px solid #ccc;
+
+  list-style: none;
+
+  background-color: var(--forest-green);
+  color: #fff;
+
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+    border: 0;
+    padding-inline: 1em;
+  }
+}
+
+.site-header__navigation.is-open .site-header__nav-list {
+  display: block;
+}
+
+.site-header__nav-item {
+  @media (min-width: 768px) {
+    flex: 1;
+  }
+}
+
+li + li {
+  border-top: 1px solid #ccc;
+
+  @media (min-width: 768px) {
+    border: 0;
+  }
+}
+
+.site-header__nav-link {
+  display: block;
+  padding: 0.8em 1em;
+
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+
+  border-radius: 0.25em;
+
+  @media (min-width: 768px) {
+    padding: 0.45em 0.75em;
+    text-align: center;
+  }
+}
+
+a:hover {
+  --forest-green: #084438;
+  --ivory: #f7f5ee;
+
+  background-color: var(--ivory);
+  color: var(--forest-green);
+}
+
+a:focus-visible {
+  --ivory: #f7f5ee;
+
+  outline: 2px solid var(--ivory);
+  outline-offset: 2px;
+}
