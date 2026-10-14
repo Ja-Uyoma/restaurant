@@ -56,58 +56,58 @@ function App() {
 
             <div className="menu">
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/garlic-and-herb-bruschetta.webp"
                     alt="Garlic and herb bruschetta"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="eager"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>Garlic and Herb Brushcetta</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">Garlic and Herb Brushcetta</p>
+                  <p className="menu-item__description">
                     Toasted sourdough with tomato, basil, garlic, olive oil, and
                     balsamic glaze.
                   </p>
                 </div>
-                <p className="price">$7.50</p>
+                <p className="menu-item__price">$7.50</p>
               </div>
 
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/crispy-calamari.webp"
                     alt="Crispy calamari"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="eager"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>Crispy Calamari</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">Crispy Calamari</p>
+                  <p className="menu-item__description">
                     Lightly breaded calamari with lemon and creamy garlic dip.
                   </p>
                 </div>
-                <p className="price">$8.50</p>
+                <p className="menu-item__price">$8.50</p>
               </div>
 
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/creamy-mushroom-soup.webp"
                     alt="Creamy mushroom soup"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="eager"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>Creamy Mushroom Soup</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">Creamy Mushroom Soup</p>
+                  <p className="menu-item__description">
                     Creamy mushroom soup with garlic, thyme, and toasted bread.
                   </p>
                 </div>
-                <p className="price">$6.50</p>
+                <p className="menu-item__price">$6.50</p>
               </div>
             </div>
           </section>
@@ -117,60 +117,60 @@ function App() {
 
             <div className="menu">
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/grilled-herb-chicken.webp"
                     alt="Grilled herb chicken"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="eager"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>Grilled Herb Chicken</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">Grilled Herb Chicken</p>
+                  <p className="menu-item__description">
                     Rosemary-garlic grilled chicken with roasted potatoes and
                     seasonal vegetables.
                   </p>
                 </div>
-                <p className="price">$14.50</p>
+                <p className="menu-item__price">$14.50</p>
               </div>
 
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/creamy-tuscan-pasta.webp"
                     alt="Creamy tuscan pasta"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="eager"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>Creamy Tuscan Pasta</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">Creamy Tuscan Pasta</p>
+                  <p className="menu-item__description">
                     Penne with creamy Parmesan, sun-dried tomatoes, spinach, and
                     grilled chicken.
                   </p>
                 </div>
-                <p className="price">$13.50</p>
+                <p className="menu-item__price">$13.50</p>
               </div>
 
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/pan-seared-salmon.webp"
                     alt="Pan-seared salmon"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="eager"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>Pan-Seared Salmon</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">Pan-Seared Salmon</p>
+                  <p className="menu-item__description">
                     Salmon with lemon-butter sauce, mashed potatoes, and sautéed
                     greens.
                   </p>
                 </div>
-                <p className="price">$13.00</p>
+                <p className="menu-item__price">$13.00</p>
               </div>
             </div>
           </section>
@@ -180,59 +180,59 @@ function App() {
 
             <div className="menu">
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/classic-chocolate-cake.webp"
                     alt="classic chocolate cake"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="lazy"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>classic Chocolate Cake</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">classic Chocolate Cake</p>
+                  <p className="menu-item__description">
                     Chocolate sponge layered with ganache, served with vanilla
                     ice cream.
                   </p>
                 </div>
-                <p className="price">$6.50</p>
+                <p className="menu-item__price">$6.50</p>
               </div>
 
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/new-york-cheesecake.webp"
                     alt="Ney York cheesecake"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="lazy"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>New York Cheesecake</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">New York Cheesecake</p>
+                  <p className="menu-item__description">
                     Baked cheesecake on a buttery biscuit crust, topped with
                     fresh berries.
                   </p>
                 </div>
-                <p className="price">$15.50</p>
+                <p className="menu-item__price">$15.50</p>
               </div>
 
               <div className="menu-item">
-                <figure>
+                <figure className="menu-item__figure">
                   <img
                     src="./src/assets/images/mango-panna-cotta.webp"
                     alt="Mango panna cotta"
-                    className="menu-item-image"
+                    className="menu-item__image"
                     loading="lazy"
                   />
                 </figure>
-                <div className="menu-item-description">
-                  <p>Mango Panna Cotta</p>
-                  <p>
+                <div className="menu-item__details">
+                  <p className="menu-item__name">Mango Panna Cotta</p>
+                  <p className="menu-item__description">
                     Vanilla panna cotta with mango coulis and tropical fruit.
                   </p>
                 </div>
-                <p className="price">$6.00</p>
+                <p className="menu-item__price">$6.00</p>
               </div>
             </div>
           </section>
