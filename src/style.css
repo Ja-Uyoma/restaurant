@@ -268,19 +268,19 @@ main > h2 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(4, auto);
 
-    > section {
+    > .menu-category {
       display: grid;
       grid-row: span 4;
       grid-template-rows: subgrid;
     }
 
-    .menu {
+    .menu-category__items {
       display: contents;
     }
   }
 }
 
-.menu {
+.menu-category__items {
   display: flex;
   flex-direction: column;
   gap: 0.25em;

@@ -51,10 +51,10 @@ function App() {
         <h2>Our Menu</h2>
 
         <div className="menu-grid">
-          <section>
-            <h3>Starters</h3>
+          <section className="menu-category">
+            <h3 className="menu-category__title">Starters</h3>
 
-            <div className="menu">
+            <div className="menu-category__items">
               <div className="menu-item">
                 <figure className="menu-item__figure">
                   <img
@@ -112,10 +112,10 @@ function App() {
             </div>
           </section>
 
-          <section>
-            <h3>Main Courses</h3>
+          <section className="menu-category">
+            <h3 className="menu-category__title">Main Courses</h3>
 
-            <div className="menu">
+            <div className="menu-category__items">
               <div className="menu-item">
                 <figure className="menu-item__figure">
                   <img
@@ -175,10 +175,10 @@ function App() {
             </div>
           </section>
 
-          <section>
-            <h3>Desserts</h3>
+          <section className="menu-category">
+            <h3 className="menu-category__title">Desserts</h3>
 
-            <div className="menu">
+            <div className="menu-category__items">
               <div className="menu-item">
                 <figure className="menu-item__figure">
                   <img
