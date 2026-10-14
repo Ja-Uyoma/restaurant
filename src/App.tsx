@@ -3,6 +3,7 @@ import { MenuPage } from "./components/MenuPage/MenuPage";
 import { Hero } from "./components/Hero/Hero";
 import { AboutUs } from "./components/AboutUs/AboutUs";
 import { Reservation } from "./components/Reservation/Reservation";
+import { Footer } from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -56,28 +57,7 @@ function App() {
 
       <Reservation id="reservation" />
 
-      <footer>
-        <section className="logo">
-          <h4>Bella Tavola</h4>
-          <p>Good food. Good company.</p>
-        </section>
-
-        <div className="info">
-          <section className="working-hours">
-            <h5>Opening Hours</h5>
-            <p>Monday - Friday: 11:00 - 22:00</p>
-            <p>Saturday: 12:00 - 23:00</p>
-            <p>Sunday: Closed</p>
-          </section>
-
-          <section className="location">
-            <h5>Location</h5>
-            <p>Main Street 25</p>
-            <p>Banja Luka</p>
-            <p>Bosnia and Herzegovina</p>
-          </section>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
