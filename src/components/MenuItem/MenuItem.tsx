@@ -1,3 +1,5 @@
+import "./menu-item.css";
+
 type MenuItemProps = {
   imgUrl: string;
   imgAlt: string;
