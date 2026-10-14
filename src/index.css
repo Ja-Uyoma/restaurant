@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("./assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("./assets/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf")
+    format("truetype");
+}
+
+:root {
+  --forest-green: #084438;
+  --ivory: #f7f5ee;
+  --charcoal: #333333;
+  --light-gray: #e0e0e0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Montserrat", sans-serif;
+}

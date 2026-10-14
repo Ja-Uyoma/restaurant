@@ -1,54 +1,8 @@
-:root {
-  --forest-green: #084438;
-  --ivory: #f7f5ee;
-  --charcoal: #333333;
-  --light-gray: #e0e0e0;
-
-  box-sizing: border-box;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-*,
-::before,
-::after {
-  box-sizing: inherit;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-@font-face {
-  font-family: "Montserrat";
-  src: url("./assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
-    format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("./assets/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf")
-    format("truetype");
-}
-
 body {
   margin: 0;
   background-color: var(--ivory);
   font-family: "Open Sans", sans-serif;
 }
-
-body * + * {
-  margin: 0;
-}
-
-h1,
-h2,
-h3 {
-  font-family: "Montserrat", sans-serif;
-}
-
 h1 {
   font-size: 1.75rem;
 }
