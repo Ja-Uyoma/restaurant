@@ -1,4 +1,3 @@
-import "./style.css";
 import { MenuPage } from "./components/MenuPage/MenuPage";
 import { Hero } from "./components/Hero/Hero";
 import { AboutUs } from "./components/AboutUs/AboutUs";
