@@ -4,7 +4,7 @@ type ReservationData = {
   id: string;
 };
 
-export function Reservation(props: ReservationData) {
+export function Reservation(props: Readonly<ReservationData>) {
   return (
     <section className="reservation" id={props.id}>
       <h2 className="reservation__title">Make a Reservation</h2>

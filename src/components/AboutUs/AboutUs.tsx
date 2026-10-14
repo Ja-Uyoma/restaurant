@@ -4,7 +4,7 @@ type AboutUsData = {
   id: string;
 };
 
-export function AboutUs(props: AboutUsData) {
+export function AboutUs(props: Readonly<AboutUsData>) {
   return (
     <aside id={props.id} className="about-us">
       <figure className="about-us__figure">

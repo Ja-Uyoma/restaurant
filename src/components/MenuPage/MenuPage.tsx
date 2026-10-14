@@ -7,7 +7,7 @@ type MenuPageData = {
   title: string;
 };
 
-export function MenuPage(props: MenuPageData) {
+export function MenuPage(props: Readonly<MenuPageData>) {
   return (
     <main id="menu" className="menu-page">
       <h2 className="menu-page__title">{props.title}</h2>

@@ -8,7 +8,7 @@ export type MenuItemData = {
   itemPrice: number;
 };
 
-export function MenuItem(props: MenuItemData) {
+export function MenuItem(props: Readonly<MenuItemData>) {
   return (
     <article className="menu-item">
       <figure className="menu-item__figure">

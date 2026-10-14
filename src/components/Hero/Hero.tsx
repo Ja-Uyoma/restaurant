@@ -7,7 +7,7 @@ type HeroData = {
   cta: string;
 };
 
-export function Hero(props: HeroData) {
+export function Hero(props: Readonly<HeroData>) {
   return (
     <div className="hero" id={props.id}>
       <section className="hero__details">

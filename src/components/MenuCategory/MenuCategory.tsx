@@ -6,7 +6,7 @@ export type MenuCategoryData = {
   items: MenuItemData[];
 };
 
-export function MenuCategory(props: MenuCategoryData) {
+export function MenuCategory(props: Readonly<MenuCategoryData>) {
   return (
     <section className="menu-category">
       <h3 className="menu-category__title">{props.title}</h3>
