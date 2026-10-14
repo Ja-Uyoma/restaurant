@@ -1,0 +1,17 @@
+.menu-category {
+  @media (min-width: 768px) {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+  }
+}
+
+.menu-category__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  @media (min-width: 768px) {
+    display: contents;
+  }
+}
