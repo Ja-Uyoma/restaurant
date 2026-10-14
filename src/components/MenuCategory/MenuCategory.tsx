@@ -1,7 +1,7 @@
 import { MenuItem, type MenuItemData } from "../MenuItem/MenuItem";
 import "./menu-category.css";
 
-type MenuCategoryData = {
+export type MenuCategoryData = {
   title: string;
   items: MenuItemData[];
 };
