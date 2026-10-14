@@ -1,6 +1,7 @@
 import "./style.css";
 import { MenuPage } from "./components/MenuPage/MenuPage";
 import { Hero } from "./components/Hero/Hero";
+import { AboutUs } from "./components/AboutUs/AboutUs";
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
                 <a href="#menu">Menu</a>
               </li>
               <li>
-                <a href="#about">About</a>
+                <a href="#about-us">About</a>
               </li>
               <li>
                 <a href="#reservation">Reservation</a>
@@ -50,21 +51,7 @@ function App() {
 
       <MenuPage title="Our Menu" />
 
-      <aside id="about">
-        <img
-          src="./src/assets/images/about-us.webp"
-          alt="Customers enjoying a meal in the restaurant"
-          loading="lazy"
-        />
-        <div>
-          <h2>About Us</h2>
-          <p>
-            Bella Tavola is a family-owned restaurant serving traditional
-            Italian food made with fresh, local ingredients. Our goal is to
-            bring authentic Italian flavours to every table.
-          </p>
-        </div>
-      </aside>
+      <AboutUs id="about-us" />
 
       <section className="reservation" id="reservation">
         <h2>Make a Reservation</h2>
