@@ -5,7 +5,7 @@ export const menu: MenuCategoryData[] = [
     title: "Starters",
     items: [
       {
-        imgUrl: "./src/assets/images/garlic-and-herb-bruschetta.webp",
+        imgUrl: "./images/garlic-and-herb-bruschetta.webp",
         imgAlt: "Garlic and herb bruschetta",
         itemName: "Garlic and Herb Brushcetta",
         itemDescription:
@@ -13,7 +13,7 @@ export const menu: MenuCategoryData[] = [
         itemPrice: 7.5,
       },
       {
-        imgUrl: "./src/assets/images/crispy-calamari.webp",
+        imgUrl: "./images/crispy-calamari.webp",
         imgAlt: "Crispy calamari",
         itemName: "Crispy Calamari",
         itemDescription:
@@ -21,7 +21,7 @@ export const menu: MenuCategoryData[] = [
         itemPrice: 8.5,
       },
       {
-        imgUrl: "./src/assets/images/creamy-mushroom-soup.webp",
+        imgUrl: "./images/creamy-mushroom-soup.webp",
         imgAlt: "Creamy mushroom soup",
         itemName: "Creamy Mushroom Soup",
         itemDescription:
@@ -34,7 +34,7 @@ export const menu: MenuCategoryData[] = [
     title: "Main Courses",
     items: [
       {
-        imgUrl: "./src/assets/images/grilled-herb-chicken.webp",
+        imgUrl: "./images/grilled-herb-chicken.webp",
         imgAlt: "Grilled herb chicken",
         itemName: "Grilled Herb Chicken",
         itemDescription:
@@ -42,7 +42,7 @@ export const menu: MenuCategoryData[] = [
         itemPrice: 14.5,
       },
       {
-        imgUrl: "./src/assets/images/creamy-tuscan-pasta.webp",
+        imgUrl: "./images/creamy-tuscan-pasta.webp",
         imgAlt: "Creamy tuscan pasta",
         itemName: "Creamy Tuscan Pasta",
         itemDescription:
@@ -50,7 +50,7 @@ export const menu: MenuCategoryData[] = [
         itemPrice: 13.5,
       },
       {
-        imgUrl: "./src/assets/images/pan-seared-salmon.webp",
+        imgUrl: "./images/pan-seared-salmon.webp",
         imgAlt: "Pan-seared salmon",
         itemName: "Pan-Seared Salmon",
         itemDescription:
@@ -63,7 +63,7 @@ export const menu: MenuCategoryData[] = [
     title: "Desserts",
     items: [
       {
-        imgUrl: "./src/assets/images/classic-chocolate-cake.webp",
+        imgUrl: "./images/classic-chocolate-cake.webp",
         imgAlt: "classic chocolate cake",
         itemName: "classic Chocolate Cake",
         itemDescription:
@@ -71,7 +71,7 @@ export const menu: MenuCategoryData[] = [
         itemPrice: 6.5,
       },
       {
-        imgUrl: "./src/assets/images/new-york-cheesecake.webp",
+        imgUrl: "./images/new-york-cheesecake.webp",
         imgAlt: "Ney York cheesecake",
         itemName: "New York Cheesecake",
         itemDescription:
@@ -79,7 +79,7 @@ export const menu: MenuCategoryData[] = [
         itemPrice: 15.5,
       },
       {
-        imgUrl: "./src/assets/images/mango-panna-cotta.webp",
+        imgUrl: "./images/mango-panna-cotta.webp",
         imgAlt: "Mango panna cotta",
         itemName: "Mango Panna Cotta",
         itemDescription:

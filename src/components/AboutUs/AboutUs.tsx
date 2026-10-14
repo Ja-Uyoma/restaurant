@@ -9,7 +9,7 @@ export function AboutUs(props: Readonly<AboutUsData>) {
     <aside id={props.id} className="about-us">
       <figure className="about-us__figure">
         <img
-          src="./src/assets/images/about-us.webp"
+          src="./images/about-us.webp"
           alt="Customers enjoying a meal in the restaurant"
           loading="lazy"
           className="about-us__image"
