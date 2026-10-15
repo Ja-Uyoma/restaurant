@@ -1,18 +1,16 @@
 import { MenuCategory } from "../MenuCategory/MenuCategory";
 import { menu } from "../../data/menu";
 
-import "./menu-page.css";
-
 type MenuPageData = {
   title: string;
 };
 
 export function MenuPage(props: Readonly<MenuPageData>) {
   return (
-    <main id="menu" className="menu-page">
-      <h2 className="menu-page__title">{props.title}</h2>
+    <main id="menu" className="px-5">
+      <h2 className="text-center font-montserrat text-2xl">{props.title}</h2>
 
-      <div className="menu-page__grid">
+      <div className="grid gap-x-4 gap-y-2 md:grid-cols-3 md:grid-rows-[repeat(4,auto)]">
         {menu.map((category) => (
           <MenuCategory
             key={category.title}

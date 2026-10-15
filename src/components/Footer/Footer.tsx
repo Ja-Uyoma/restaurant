@@ -1,26 +1,42 @@
-import "./footer.css";
-
 export function Footer() {
   return (
-    <footer className="site-footer">
-      <section className="site-footer__brand">
-        <h4 className="site-footer__name">Bella Tavola</h4>
-        <p className="site-footer__tagline">Good food. Good company.</p>
+    <footer className="mt-6 flex flex-col justify-between bg-forest-green p-4 text-white md:flex-row">
+      <section className="flex-1">
+        <h4 className="my-2 font-montserrat text-[15px] text-ivory">
+          Bella Tavola
+        </h4>
+        <p className="my-1 text-[10px] font-bold text-light-gray">
+          Good food. Good company.
+        </p>
       </section>
 
-      <div className="site-footer__info">
-        <section className="site-footer__hours">
-          <h5 className="site-footer__heading">Opening Hours</h5>
-          <p>Monday - Friday: 11:00 - 22:00</p>
-          <p>Saturday: 12:00 - 23:00</p>
-          <p>Sunday: Closed</p>
+      <div className="flex flex-[2] justify-around gap-[0.675em]">
+        <section>
+          <h5 className="my-2 font-montserrat text-sm text-ivory">
+            Opening Hours
+          </h5>
+          <p className="my-1 text-[10px] font-bold text-light-gray">
+            Monday - Friday: 11:00 - 22:00
+          </p>
+          <p className="my-1 text-[10px] font-bold text-light-gray">
+            Saturday: 12:00 - 23:00
+          </p>
+          <p className="my-1 text-[10px] font-bold text-light-gray">
+            Sunday: Closed
+          </p>
         </section>
 
-        <section className="site-footer__location">
-          <h5 className="site-footer__heading">Location</h5>
-          <p>Main Street 25</p>
-          <p>Banja Luka</p>
-          <p>Bosnia and Herzegovina</p>
+        <section>
+          <h5 className="my-2 font-montserrat text-sm text-ivory">Location</h5>
+          <p className="my-1 text-[10px] font-bold text-light-gray">
+            Main Street 25
+          </p>
+          <p className="my-1 text-[10px] font-bold text-light-gray">
+            Banja Luka
+          </p>
+          <p className="my-1 text-[10px] font-bold text-light-gray">
+            Bosnia and Herzegovina
+          </p>
         </section>
       </div>
     </footer>

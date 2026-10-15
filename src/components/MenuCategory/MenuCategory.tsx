@@ -1,5 +1,4 @@
 import { MenuItem, type MenuItemData } from "../MenuItem/MenuItem";
-import "./menu-category.css";
 
 export type MenuCategoryData = {
   title: string;
@@ -8,10 +7,10 @@ export type MenuCategoryData = {
 
 export function MenuCategory(props: Readonly<MenuCategoryData>) {
   return (
-    <section className="menu-category">
-      <h3 className="menu-category__title">{props.title}</h3>
+    <section className="md:row-span-4 md:grid md:grid-rows-subgrid">
+      <h3 className="font-montserrat text-xl">{props.title}</h3>
 
-      <div className="menu-category__items">
+      <div className="flex flex-col gap-1 md:contents">
         {props.items.map((item) => (
           <MenuItem key={item.itemName} {...item} />
         ))}

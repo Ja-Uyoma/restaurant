@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@theme {
+  --color-forest-green: #084438;
+  --color-ivory: #f7f5ee;
+  --color-charcoal: #333333;
+  --color-light-gray: #e0e0e0;
+  --font-montserrat: "Montserrat", sans-serif;
+}
+
 @font-face {
   font-family: "Montserrat";
   font-display: swap;
@@ -19,12 +27,4 @@
   --ivory: #f7f5ee;
   --charcoal: #333333;
   --light-gray: #e0e0e0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: "Montserrat", sans-serif;
 }
