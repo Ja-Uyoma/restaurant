@@ -16,7 +16,7 @@ export function Hero(props: Readonly<HeroData>) {
         <p className="max-w-150 leading-[1.6]">{props.description}</p>
       </section>
 
-      <button className="cursor-pointer rounded-[1.5em] border-0 bg-forest-green px-[1.8rem] py-[0.9rem] text-base font-medium text-white">
+      <button className="cursor-pointer rounded-[1.5em] border-0 bg-paprika px-[1.8rem] py-[0.9rem] text-base font-medium text-white">
         {props.cta}
       </button>
     </div>

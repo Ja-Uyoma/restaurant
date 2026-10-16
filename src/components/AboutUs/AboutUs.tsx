@@ -6,7 +6,7 @@ export function AboutUs(props: Readonly<AboutUsData>) {
   return (
     <aside
       id={props.id}
-      className="mt-6 bg-light-gray px-5 py-6 text-left md:flex md:items-center md:gap-8"
+      className="mt-6 bg-clay px-5 py-6 text-left md:flex md:items-center md:gap-8"
     >
       <figure className="m-0 md:flex-1">
         <img
@@ -18,8 +18,10 @@ export function AboutUs(props: Readonly<AboutUsData>) {
       </figure>
 
       <section className="md:flex-1">
-        <h2 className="font-montserrat text-2xl font-bold">About Us</h2>
-        <p className="text-xs font-medium text-charcoal min-[786px]:w-[60%] min-[786px]:text-base">
+        <h2 className="font-montserrat text-2xl font-bold text-olive">
+          About Us
+        </h2>
+        <p className="text-xs font-medium text-ink min-[786px]:w-[60%] min-[786px]:text-base">
           Bella Tavola is a family-owned restaurant serving traditional Italian
           food made with fresh, local ingredients. Our goal is to bring
           authentic Italian flavours to every table.

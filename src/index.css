@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-forest-green: #084438;
-  --color-ivory: #f7f5ee;
-  --color-charcoal: #333333;
-  --color-light-gray: #e0e0e0;
+  --color-espresso: #32251f;
+  --color-paprika: #b84935;
+  --color-marigold: #e8b348;
+  --color-olive: #65724f;
+  --color-parchment: #fff8ed;
+  --color-clay: #ecd9ce;
+  --color-ink: #302824;
   --font-montserrat: "Montserrat", sans-serif;
 }
 
@@ -23,8 +26,21 @@
 }
 
 :root {
-  --forest-green: #084438;
-  --ivory: #f7f5ee;
-  --charcoal: #333333;
-  --light-gray: #e0e0e0;
+  --espresso: #32251f;
+  --paprika: #b84935;
+  --marigold: #e8b348;
+  --olive: #65724f;
+  --parchment: #fff8ed;
+  --clay: #ecd9ce;
+  --ink: #302824;
+}
+
+body {
+  background-color: var(--parchment);
+  color: var(--ink);
+}
+
+::selection {
+  background-color: var(--paprika);
+  color: white;
 }

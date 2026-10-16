@@ -19,12 +19,12 @@ export function MenuItem(props: Readonly<MenuItemData>) {
         />
       </figure>
       <div className="min-w-0 flex-[1_1_0] pb-2">
-        <p className="mb-1 text-[13px] font-bold leading-[1.1]">
+        <p className="mb-1 text-[13px] font-bold leading-[1.1] text-espresso">
           {props.itemName}
         </p>
         <p className="text-[11px] leading-[1.1]">{props.itemDescription}</p>
       </div>
-      <p className="flex-none text-[13px] font-bold">
+      <p className="flex-none text-[13px] font-bold text-paprika">
         ${props.itemPrice.toFixed(2)}
       </p>
     </article>
