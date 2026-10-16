@@ -9,7 +9,7 @@ export type MenuItemData = {
 export function MenuItem(props: Readonly<MenuItemData>) {
   return (
     <article className="flex items-baseline gap-2 rounded-md bg-white p-1">
-      <figure className="m-0 aspect-[4/3] flex-[0_0_28%] self-center overflow-hidden rounded">
+      <figure className="m-0 aspect-4/3 flex-[0_0_28%] self-center overflow-hidden rounded">
         <img
           src={props.imgUrl}
           alt={props.imgAlt}

@@ -13,7 +13,7 @@ export function AboutUs(props: Readonly<AboutUsData>) {
           src="./images/about-us.webp"
           alt="Customers enjoying a meal in the restaurant"
           loading="lazy"
-          className="hidden rounded md:block md:h-auto md:max-h-[250px] md:w-full md:object-cover md:object-center"
+          className="hidden rounded md:block md:h-auto md:max-h-62.5 md:w-full md:object-cover md:object-center"
         />
       </figure>
 

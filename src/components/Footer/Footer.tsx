@@ -10,7 +10,7 @@ export function Footer() {
         </p>
       </section>
 
-      <div className="flex flex-[2] justify-around gap-[0.675em]">
+      <div className="flex flex-2 justify-around gap-[0.675em]">
         <section>
           <h5 className="my-2 font-montserrat text-sm text-ivory">
             Opening Hours
