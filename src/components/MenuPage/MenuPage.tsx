@@ -8,7 +8,7 @@ type MenuPageData = {
 export function MenuPage(props: Readonly<MenuPageData>) {
   return (
     <main id="menu" className="px-5">
-      <h2 className="text-center font-montserrat text-2xl text-espresso">
+      <h2 className="mt-6 mb-1 text-center font-montserrat text-2xl text-espresso">
         {props.title}
       </h2>
 

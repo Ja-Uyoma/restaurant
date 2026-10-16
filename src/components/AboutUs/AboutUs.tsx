@@ -18,7 +18,7 @@ export function AboutUs(props: Readonly<AboutUsData>) {
       </figure>
 
       <section className="md:flex-1">
-        <h2 className="font-montserrat text-2xl font-bold text-olive">
+        <h2 className="mb-4 font-montserrat text-2xl font-bold text-olive">
           About Us
         </h2>
         <p className="text-xs font-medium text-ink min-[786px]:w-[60%] min-[786px]:text-base">

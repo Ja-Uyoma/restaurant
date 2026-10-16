@@ -5,7 +5,7 @@ type ReservationData = {
 export function Reservation(props: Readonly<ReservationData>) {
   return (
     <section className="px-5" id={props.id}>
-      <h2 className="text-left font-montserrat text-2xl text-espresso md:text-center">
+      <h2 className="my-5 text-left font-montserrat text-2xl text-espresso md:text-center">
         Make a Reservation
       </h2>
 
