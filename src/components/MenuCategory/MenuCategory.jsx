@@ -1,11 +1,6 @@
-import { MenuItem, type MenuItemData } from "../MenuItem/MenuItem";
+import { MenuItem } from "../MenuItem/MenuItem";
 
-export type MenuCategoryData = {
-  title: string;
-  items: MenuItemData[];
-};
-
-export function MenuCategory(props: Readonly<MenuCategoryData>) {
+export function MenuCategory(props) {
   return (
     <section className="md:row-span-4 md:grid md:grid-rows-subgrid">
       <h3 className="my-4 font-montserrat text-xl text-olive">{props.title}</h3>

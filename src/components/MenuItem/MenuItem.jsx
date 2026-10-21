@@ -1,12 +1,4 @@
-export type MenuItemData = {
-  imgUrl: string;
-  imgAlt: string;
-  itemName: string;
-  itemDescription: string;
-  itemPrice: number;
-};
-
-export function MenuItem(props: Readonly<MenuItemData>) {
+export function MenuItem(props) {
   return (
     <article className="flex items-baseline gap-2 rounded-md border border-[#dfc7b6] bg-clay p-1 md:transition-[transform,box-shadow] md:duration-200 md:hover:-translate-y-1 md:hover:shadow-md">
       <figure className="m-0 aspect-4/3 flex-[0_0_28%] self-center overflow-hidden rounded">

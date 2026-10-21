@@ -1,6 +1,4 @@
-import { type MenuCategoryData } from "../components/MenuCategory/MenuCategory";
-
-export const menu: MenuCategoryData[] = [
+export const menu = [
   {
     title: "Starters",
     items: [

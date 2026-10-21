@@ -1,8 +1,4 @@
-type AboutUsData = {
-  id: string;
-};
-
-export function AboutUs(props: Readonly<AboutUsData>) {
+export function AboutUs(props) {
   return (
     <aside
       id={props.id}

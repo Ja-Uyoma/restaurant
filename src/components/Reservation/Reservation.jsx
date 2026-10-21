@@ -1,8 +1,4 @@
-type ReservationData = {
-  id: string;
-};
-
-export function Reservation(props: Readonly<ReservationData>) {
+export function Reservation(props) {
   return (
     <section className="px-5" id={props.id}>
       <h2 className="my-5 text-left font-montserrat text-2xl text-espresso md:text-center">

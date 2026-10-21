@@ -1,11 +1,7 @@
 import { MenuCategory } from "../MenuCategory/MenuCategory";
 import { menu } from "../../data/menu";
 
-type MenuPageData = {
-  title: string;
-};
-
-export function MenuPage(props: Readonly<MenuPageData>) {
+export function MenuPage(props) {
   return (
     <main id="menu" className="px-5">
       <h2 className="mt-6 mb-1 text-center font-montserrat text-2xl text-espresso">
