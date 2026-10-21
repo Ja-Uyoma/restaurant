@@ -4,6 +4,7 @@ import { AboutUs } from "./components/AboutUs/AboutUs";
 import { Reservation } from "./components/Reservation/Reservation";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
+import { AccountAccess } from "./components/AccountAccess/AccountAccess";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         description="Authentic Italian Cuisine"
         cta="Reserve a Table"
       />
+
+      <AccountAccess />
 
       <MenuPage title="Our Menu" />
 
