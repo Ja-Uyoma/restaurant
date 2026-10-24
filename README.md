@@ -38,12 +38,8 @@ them. The server uses pooled `DATABASE_URL` for requests and prefers
 
 The account panel supports Neon Auth email/password sign-up, sign-in, and
 sign-out. Its protected API check obtains a Neon Auth JWT and verifies it in
-Express against the branch JWKS. The public menu is available without signing
-in. The `/staff` page lets approved staff add menu items; the API authorizes
-those writes using the comma-separated `STAFF_USER_IDS` environment variable.
-To grant access, sign in, copy the account ID shown in the account panel, and
-add it to `STAFF_USER_IDS` in the API host's environment settings. Restart or
-redeploy the API after changing the allowlist.
+Express against the branch JWKS. Authentication currently identifies users but
+does not assign staff/customer roles or restrict staff-only operations.
 
 ## Hosting configuration
 
@@ -54,8 +50,7 @@ The frontend GitHub Pages workflow reads these repository Actions variables:
 
 The Express host must provide `DATABASE_URL`, `NEON_AUTH_BASE_URL`, and
 `NEON_AUTH_JWKS_URL`. Set `CLIENT_ORIGINS` to a comma-separated list containing
-the deployed frontend origin so the browser can call the API. Set
-`STAFF_USER_IDS` to the IDs of accounts approved to add menu items. Deploy the
-API separately from GitHub Pages. Add the deployed frontend origin (scheme and
+the deployed frontend origin so the browser can call the API. Deploy the API
+separately from GitHub Pages. Add the deployed frontend origin (scheme and
 hostname only) to Neon Auth's trusted domains before enabling production
 sign-in.

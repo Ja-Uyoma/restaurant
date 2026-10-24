@@ -30,12 +30,6 @@ const allowedOrigins = new Set(
     .map((origin) => origin.trim())
     .filter(Boolean),
 );
-const staffUserIds = new Set(
-  (process.env.STAFF_USER_IDS || "")
-    .split(",")
-    .map((id) => id.trim())
-    .filter(Boolean),
-);
 
 const app = express();
 app.disable("x-powered-by");
@@ -93,110 +87,6 @@ app.get("/api/menu", async (_request, response) => {
   response.json(categories);
 });
 
-app.get(
-  "/api/staff/menu/categories",
-  requireAuth,
-  requireStaff,
-  async (_request, response) => {
-    const { rows } = await pool.query(
-      "SELECT name FROM menu_categories ORDER BY sort_order",
-    );
-    response.json(rows.map((row) => row.name));
-  },
-);
-
-app.post(
-  "/api/staff/menu/items",
-  requireAuth,
-  requireStaff,
-  async (request, response) => {
-    const { category, name, description, price, imageUrl, imageAlt } =
-      request.body ?? {};
-    const parsedPrice = Number(price);
-
-    if (
-      typeof category !== "string" ||
-      typeof name !== "string" ||
-      !name.trim() ||
-      name.trim().length > 120 ||
-      typeof description !== "string" ||
-      !description.trim() ||
-      description.trim().length > 1000 ||
-      !/^\d{1,8}(?:\.\d{1,2})?$/.test(String(price)) ||
-      !Number.isFinite(parsedPrice) ||
-      parsedPrice < 0 ||
-      typeof imageUrl !== "string" ||
-      !imageUrl.trim() ||
-      imageUrl.trim().length > 2048 ||
-      typeof imageAlt !== "string" ||
-      !imageAlt.trim() ||
-      imageAlt.trim().length > 255
-    ) {
-      return response
-        .status(400)
-        .json({ error: "Enter valid menu item details." });
-    }
-
-    const client = await pool.connect();
-    try {
-      await client.query("BEGIN");
-
-      const categoryResult = await client.query(
-        "SELECT id FROM menu_categories WHERE name = $1 FOR UPDATE",
-        [category],
-      );
-      if (categoryResult.rowCount === 0) {
-        await client.query("ROLLBACK");
-        return response.status(400).json({ error: "Choose a valid category." });
-      }
-
-      const { rows } = await client.query(
-        `INSERT INTO menu_items (
-          category_id,
-          name,
-          description,
-          price,
-          image_url,
-          image_alt,
-          sort_order
-        )
-        SELECT
-          $1,
-          $2,
-          $3,
-          $4,
-          $5,
-          $6,
-          COALESCE(MAX(sort_order), 0) + 1
-        FROM menu_items
-        WHERE category_id = $1
-        RETURNING id, name`,
-        [
-          categoryResult.rows[0].id,
-          name.trim(),
-          description.trim(),
-          parsedPrice,
-          imageUrl.trim(),
-          imageAlt.trim(),
-        ],
-      );
-
-      await client.query("COMMIT");
-      return response.status(201).json({ item: rows[0] });
-    } catch (error) {
-      await client.query("ROLLBACK");
-      if (error.code === "23505") {
-        return response.status(409).json({
-          error: "An item with that name already exists in this category.",
-        });
-      }
-      throw error;
-    } finally {
-      client.release();
-    }
-  },
-);
-
 async function requireAuth(request, response, next) {
   const [scheme, token, ...extra] = (request.get("authorization") || "").split(
     " ",
@@ -219,20 +109,6 @@ async function requireAuth(request, response, next) {
 
     return next(error);
   }
-}
-
-function requireStaff(request, response, next) {
-  if (staffUserIds.size === 0) {
-    return response
-      .status(503)
-      .json({ error: "Staff access is not configured on the server." });
-  }
-  if (!staffUserIds.has(request.auth.sub)) {
-    return response
-      .status(403)
-      .json({ error: "This account is not approved for staff access." });
-  }
-  return next();
 }
 
 app.get("/api/me", requireAuth, (request, response) => {
