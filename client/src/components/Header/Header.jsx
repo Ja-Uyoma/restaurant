@@ -33,7 +33,7 @@ export function Header() {
           <li className="md:flex-1">
             <a
               className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#home"
+              href="/#home"
             >
               Home
             </a>
@@ -41,7 +41,7 @@ export function Header() {
           <li className="md:flex-1">
             <a
               className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#menu"
+              href="/#menu"
             >
               Menu
             </a>
@@ -49,7 +49,7 @@ export function Header() {
           <li className="md:flex-1">
             <a
               className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#about-us"
+              href="/#about-us"
             >
               About
             </a>
@@ -57,9 +57,17 @@ export function Header() {
           <li className="md:flex-1">
             <a
               className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#reservation"
+              href="/#reservation"
             >
               Reservation
+            </a>
+          </li>
+          <li className="md:flex-1">
+            <a
+              className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
+              href="/staff"
+            >
+              Staff
             </a>
           </li>
         </ul>

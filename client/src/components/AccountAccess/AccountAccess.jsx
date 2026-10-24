@@ -125,6 +125,7 @@ export function AccountAccess() {
 
   return (
     <section
+      id="account"
       aria-labelledby="account-heading"
       className="mx-5 my-6 rounded-md border border-[#dfc7b6] bg-clay p-4"
     >
@@ -140,6 +141,9 @@ export function AccountAccess() {
       ) : user ? (
         <div className="flex flex-wrap items-center gap-3">
           <p className="m-0">Signed in as {user.email}.</p>
+          <p className="m-0 break-all text-sm">
+            Account ID (for staff access): {user.id}
+          </p>
           <button
             className="cursor-pointer rounded border-0 bg-paprika px-3 py-2 text-white"
             type="button"
