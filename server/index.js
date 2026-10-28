@@ -5,15 +5,21 @@ import pg from "pg";
 
 const { Pool } = pg;
 const port = Number(process.env.PORT || 3000);
+const isLocalDatabase = Boolean(process.env.LOCAL_DATABASE_URL);
 const databaseUrl = process.env.LOCAL_DATABASE_URL || process.env.DATABASE_URL;
 const authBaseUrl = process.env.NEON_AUTH_BASE_URL;
 const authJwksUrl = process.env.NEON_AUTH_JWKS_URL;
 
 if (!databaseUrl) {
-  throw new Error("DATABASE_URL must be set");
+  throw new Error("LOCAL_DATABASE_URL or DATABASE_URL must be set");
 }
-if (!authBaseUrl || !authJwksUrl) {
+if ((!authBaseUrl || !authJwksUrl) && !isLocalDatabase) {
   throw new Error("NEON_AUTH_BASE_URL and NEON_AUTH_JWKS_URL must be set");
+}
+if (Boolean(authBaseUrl) !== Boolean(authJwksUrl)) {
+  throw new Error(
+    "NEON_AUTH_BASE_URL and NEON_AUTH_JWKS_URL must both be set when configuring Neon Auth",
+  );
 }
 
 const pool = new Pool({
@@ -22,8 +28,10 @@ const pool = new Pool({
   idleTimeoutMillis: 30_000,
   connectionTimeoutMillis: 10_000,
 });
-const authJwks = createRemoteJWKSet(new URL(authJwksUrl));
-const authIssuer = new URL(authBaseUrl).origin;
+const authJwks = authJwksUrl
+  ? createRemoteJWKSet(new URL(authJwksUrl))
+  : null;
+const authIssuer = authBaseUrl ? new URL(authBaseUrl).origin : null;
 const allowedOrigins = new Set(
   (process.env.CLIENT_ORIGINS || "http://localhost:5173")
     .split(",")
@@ -88,6 +96,12 @@ app.get("/api/menu", async (_request, response) => {
 });
 
 async function requireAuth(request, response, next) {
+  if (!authJwks || !authIssuer) {
+    return response
+      .status(503)
+      .json({ error: "Authentication is not configured for this API" });
+  }
+
   const [scheme, token, ...extra] = (request.get("authorization") || "").split(
     " ",
   );

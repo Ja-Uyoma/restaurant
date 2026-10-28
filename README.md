@@ -21,7 +21,10 @@ The root `.env.local` contains `LOCAL_DATABASE_URL`, which points the server and
 migrations at this local database. Keep that file private; it is ignored by Git.
 The existing Neon `DATABASE_URL` remains available as a database fallback when
 `LOCAL_DATABASE_URL` is unset, and the Neon Auth settings remain configured for
-local sign-in.
+local sign-in if you want to use Neon Auth locally. The API can also start
+without `NEON_AUTH_BASE_URL` or `NEON_AUTH_JWKS_URL` when using the local
+database; in that case, its authenticated `/api/me` endpoint returns `503`.
+Provide both Auth settings to enable the endpoint.
 
 Install frontend dependencies and start Vite:
 
