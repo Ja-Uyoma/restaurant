@@ -5,10 +5,14 @@ import pg from "pg";
 
 const { Pool } = pg;
 const connectionString =
-  process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+  process.env.LOCAL_DATABASE_URL ||
+  process.env.DATABASE_URL_UNPOOLED ||
+  process.env.DATABASE_URL;
 
 if (!connectionString) {
-  throw new Error("DATABASE_URL_UNPOOLED or DATABASE_URL must be set");
+  throw new Error(
+    "LOCAL_DATABASE_URL, DATABASE_URL_UNPOOLED, or DATABASE_URL must be set",
+  );
 }
 
 const pool = new Pool({ connectionString, max: 1 });

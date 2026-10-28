@@ -5,7 +5,7 @@ import pg from "pg";
 
 const { Pool } = pg;
 const port = Number(process.env.PORT || 3000);
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.LOCAL_DATABASE_URL || process.env.DATABASE_URL;
 const authBaseUrl = process.env.NEON_AUTH_BASE_URL;
 const authJwksUrl = process.env.NEON_AUTH_JWKS_URL;
 
