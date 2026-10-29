@@ -73,3 +73,6 @@ separately from GitHub Pages. Add the deployed frontend origin (scheme and
 hostname only) to Neon Auth's trusted domains before enabling production
 sign-in. Production does not need `LOCAL_DATABASE_URL`; the server continues to
 use the managed Neon `DATABASE_URL`.
+
+Build and start the compiled TypeScript API with `pnpm build` and `pnpm start`
+from `server/`.
