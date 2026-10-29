@@ -1,4 +1,8 @@
-export function Reservation(props) {
+interface ReservationProps {
+  id: string;
+}
+
+export function Reservation(props: Readonly<ReservationProps>) {
   return (
     <section className="px-5" id={props.id}>
       <h2 className="my-5 text-left font-montserrat text-2xl text-espresso md:text-center">

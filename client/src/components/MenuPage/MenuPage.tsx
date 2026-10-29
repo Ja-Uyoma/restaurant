@@ -2,8 +2,23 @@ import { useEffect, useState } from "react";
 import { MenuCategory } from "../MenuCategory/MenuCategory";
 import { apiUrl } from "../../lib/api";
 
-export function MenuPage(props) {
-  const [menu, setMenu] = useState([]);
+interface MenuCategoryData {
+  title: string;
+  items: {
+    imgUrl: string;
+    imgAlt: string;
+    itemName: string;
+    itemDescription: string;
+    itemPrice: number;
+  }[];
+}
+
+interface MenuPageProps {
+  title: string;
+}
+
+export function MenuPage(props: Readonly<MenuPageProps>) {
+  const [menu, setMenu] = useState<MenuCategoryData[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -15,7 +30,7 @@ export function MenuPage(props) {
         if (!response.ok) {
           throw new Error("Unable to load the menu.");
         }
-        return response.json();
+        return (await response.json()) as MenuCategoryData[];
       })
       .then((categories) => {
         if (isMounted) {
@@ -24,7 +39,11 @@ export function MenuPage(props) {
       })
       .catch((loadError) => {
         if (isMounted) {
-          setError(loadError.message || "Unable to load the menu.");
+          setError(
+            loadError instanceof Error && loadError.message
+              ? loadError.message
+              : "Unable to load the menu.",
+          );
         }
       })
       .finally(() => {

@@ -1,10 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { apiUrl } from "../../lib/api";
 import { authClient } from "../../lib/auth";
 
+interface AccountUser {
+  email: string | null;
+}
+
+interface ApiMeResponse {
+  user?: {
+    id: string;
+    email: string | null;
+  };
+  error?: string;
+}
+
+function getErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error && error.message ? error.message : fallback;
+}
+
+function getFormValue(formData: FormData, name: string): string {
+  const value = formData.get(name);
+  if (typeof value !== "string") {
+    throw new Error(`Missing ${name} field.`);
+  }
+  return value;
+}
+
 export function AccountAccess() {
-  const [user, setUser] = useState(null);
-  const [mode, setMode] = useState("sign-in");
+  const [user, setUser] = useState<AccountUser | null>(null);
+  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -25,7 +49,9 @@ export function AccountAccess() {
       })
       .catch((sessionError) => {
         if (isMounted) {
-          setError(sessionError.message || "Unable to load your account.");
+          setError(
+            getErrorMessage(sessionError, "Unable to load your account."),
+          );
         }
       })
       .finally(() => {
@@ -39,21 +65,21 @@ export function AccountAccess() {
     };
   }, []);
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
     setError("");
     setMessage("");
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email").toString();
-    const password = formData.get("password").toString();
 
     try {
+      const email = getFormValue(formData, "email");
+      const password = getFormValue(formData, "password");
       const result =
         mode === "sign-up"
           ? await authClient.signUp.email({
-              name: formData.get("name").toString(),
+              name: getFormValue(formData, "name"),
               email,
               password,
             })
@@ -62,7 +88,6 @@ export function AccountAccess() {
       if (result.error) {
         throw new Error(result.error.message);
       }
-
       setUser(result.data?.user ?? null);
       if (mode === "sign-up") {
         setMessage(
@@ -70,7 +95,9 @@ export function AccountAccess() {
         );
       }
     } catch (submitError) {
-      setError(submitError.message || "Unable to complete the request.");
+      setError(
+        getErrorMessage(submitError, "Unable to complete the request."),
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -87,7 +114,7 @@ export function AccountAccess() {
       }
       setUser(null);
     } catch (signOutError) {
-      setError(signOutError.message || "Unable to sign out.");
+      setError(getErrorMessage(signOutError, "Unable to sign out."));
     }
   }
 
@@ -109,17 +136,22 @@ export function AccountAccess() {
           Authorization: `Bearer ${tokenResult.data.token}`,
         },
       });
-      const result = await response.json();
+      const result = (await response.json()) as ApiMeResponse;
 
       if (!response.ok) {
         throw new Error(result.error || "The API rejected this session.");
+      }
+      if (!result.user) {
+        throw new Error("The API returned an invalid response.");
       }
 
       setMessage(
         `Protected API verified for ${result.user.email || result.user.id}.`,
       );
     } catch (apiError) {
-      setError(apiError.message || "Unable to verify the protected API.");
+      setError(
+        getErrorMessage(apiError, "Unable to verify the protected API."),
+      );
     }
   }
 
@@ -205,7 +237,7 @@ export function AccountAccess() {
                   mode === "sign-up" ? "new-password" : "current-password"
                 }
                 className="rounded border border-[#cbb9a8] bg-parchment px-3 py-2 text-ink"
-                minLength="8"
+                minLength={8}
                 name="password"
                 type="password"
                 required

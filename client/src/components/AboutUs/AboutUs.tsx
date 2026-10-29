@@ -1,4 +1,8 @@
-export function AboutUs(props) {
+interface AboutUsProps {
+  id: string;
+}
+
+export function AboutUs(props: Readonly<AboutUsProps>) {
   return (
     <aside
       id={props.id}
