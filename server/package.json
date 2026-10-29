@@ -6,14 +6,24 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node --env-file-if-exists=../.env.local --watch index.js",
-    "start": "node --env-file-if-exists=../.env.local index.js",
-    "migrate": "node --env-file-if-exists=../.env.local migrate.js"
+    "dev": "node --env-file-if-exists=../.env.local --import tsx --watch index.ts",
+    "build": "tsc && mkdir -p dist/migrations && cp -R migrations/. dist/migrations/",
+    "start": "node --env-file-if-exists=../.env.local dist/index.js",
+    "migrate": "node --env-file-if-exists=../.env.local --import tsx migrate.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.1.0",
     "jose": "^6.2.13",
     "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.15.30",
+    "@types/pg": "^8.15.4",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
   }
 }
