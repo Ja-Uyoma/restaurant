@@ -63,7 +63,7 @@ export function MenuPage(props: Readonly<MenuPageProps>) {
         {props.title}
       </h2>
 
-      {isLoading && <p role="status">Loading menu…</p>}
+      {isLoading && <output>Loading menu…</output>}
       {error && <p role="alert">{error}</p>}
       {!isLoading && !error && (
         <div className="grid gap-x-4 gap-y-2 md:grid-cols-3 md:grid-rows-[repeat(4,auto)]">
