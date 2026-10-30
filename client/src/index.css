@@ -1,14 +1,37 @@
 @import "tailwindcss";
 
-@theme {
-  --color-espresso: #32251f;
-  --color-paprika: #b84935;
-  --color-marigold: #e8b348;
-  --color-olive: #65724f;
-  --color-parchment: #fff8ed;
-  --color-clay: #ecd9ce;
-  --color-ink: #302824;
+@theme inline {
+  --color-base-100: var(--lemonade-base-100);
+  --color-base-200: var(--lemonade-base-200);
+  --color-base-300: var(--lemonade-base-300);
+  --color-base-content: var(--lemonade-base-content);
+  --color-primary: var(--lemonade-primary);
+  --color-primary-content: var(--lemonade-primary-content);
+  --color-secondary: var(--lemonade-secondary);
+  --color-secondary-content: var(--lemonade-secondary-content);
+  --color-accent: var(--lemonade-accent);
+  --color-accent-content: var(--lemonade-accent-content);
+  --color-neutral: var(--lemonade-neutral);
+  --color-neutral-content: var(--lemonade-neutral-content);
+  --color-info: var(--lemonade-info);
+  --color-info-content: var(--lemonade-info-content);
+  --color-success: var(--lemonade-success);
+  --color-success-content: var(--lemonade-success-content);
+  --color-warning: var(--lemonade-warning);
+  --color-warning-content: var(--lemonade-warning-content);
+  --color-error: var(--lemonade-error);
+  --color-error-content: var(--lemonade-error-content);
+  --color-espresso: var(--lemonade-base-content);
+  --color-paprika: var(--lemonade-primary);
+  --color-marigold: var(--lemonade-accent);
+  --color-olive: var(--lemonade-neutral);
+  --color-parchment: var(--lemonade-base-100);
+  --color-clay: var(--lemonade-base-200);
+  --color-ink: var(--lemonade-base-content);
   --font-montserrat: "Montserrat", sans-serif;
+  --radius-box: var(--lemonade-radius-box);
+  --radius-field: var(--lemonade-radius-field);
+  --radius-selector: var(--lemonade-radius-selector);
 }
 
 @font-face {
@@ -25,22 +48,115 @@
     format("truetype");
 }
 
-:root {
-  --espresso: #32251f;
-  --paprika: #b84935;
-  --marigold: #e8b348;
-  --olive: #65724f;
-  --parchment: #fff8ed;
-  --clay: #ecd9ce;
-  --ink: #302824;
+:root,
+[data-theme="lemonade"] {
+  color-scheme: light;
+  --lemonade-base-100: oklch(98.71% 0.02 123.72);
+  --lemonade-base-200: oklch(91.8% 0.018 123.72);
+  --lemonade-base-300: oklch(84.89% 0.017 123.72);
+  --lemonade-base-content: oklch(19.742% 0.004 123.72);
+  --lemonade-primary: oklch(58.92% 0.199 134.6);
+  --lemonade-primary-content: oklch(11.784% 0.039 134.6);
+  --lemonade-secondary: oklch(77.75% 0.196 111.09);
+  --lemonade-secondary-content: oklch(15.55% 0.039 111.09);
+  --lemonade-accent: oklch(85.39% 0.201 100.73);
+  --lemonade-accent-content: oklch(17.078% 0.04 100.73);
+  --lemonade-neutral: oklch(30.98% 0.075 108.6);
+  --lemonade-neutral-content: oklch(86.196% 0.015 108.6);
+  --lemonade-info: oklch(86.19% 0.047 224.14);
+  --lemonade-info-content: oklch(17.238% 0.009 224.14);
+  --lemonade-success: oklch(86.19% 0.047 157.85);
+  --lemonade-success-content: oklch(17.238% 0.009 157.85);
+  --lemonade-warning: oklch(86.19% 0.047 102.15);
+  --lemonade-warning-content: oklch(17.238% 0.009 102.15);
+  --lemonade-error: oklch(86.19% 0.047 25.85);
+  --lemonade-error-content: oklch(17.238% 0.009 25.85);
+  --lemonade-radius-selector: 1rem;
+  --lemonade-radius-field: 0.5rem;
+  --lemonade-radius-box: 1rem;
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--parchment);
-  color: var(--ink);
+  min-width: 20rem;
+  margin: 0;
+  background-color: var(--lemonade-base-100);
+  color: var(--lemonade-base-content);
+  font-family: "Open Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--lemonade-primary);
+  outline-offset: 3px;
 }
 
 ::selection {
-  background-color: var(--paprika);
-  color: white;
+  background-color: var(--lemonade-primary);
+  color: var(--lemonade-primary-content);
+}
+
+.section-wrap {
+  width: min(100% - 2.5rem, 76rem);
+  margin-inline: auto;
+}
+
+.eyebrow {
+  color: var(--lemonade-neutral);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  margin: 0;
+  color: var(--lemonade-base-content);
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
