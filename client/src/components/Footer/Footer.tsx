@@ -1,42 +1,41 @@
 export function Footer() {
   return (
-    <footer className="mt-6 flex flex-col justify-between bg-espresso p-4 text-white md:flex-row">
-      <section className="flex-1">
-        <h4 className="my-2 font-montserrat text-[15px] text-marigold">
-          Bella Tavola
-        </h4>
-        <p className="my-1 text-[10px] font-bold text-parchment">
-          Good food. Good company.
-        </p>
-      </section>
-
-      <div className="flex flex-2 justify-around gap-[0.675em]">
+    <footer className="bg-neutral px-5 py-12 text-neutral-content">
+      <div className="section-wrap grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr]">
         <section>
-          <h5 className="my-2 font-montserrat text-sm text-marigold">
-            Opening Hours
-          </h5>
-          <p className="my-1 text-[10px] font-bold text-parchment">
-            Monday - Friday: 11:00 - 22:00
-          </p>
-          <p className="my-1 text-[10px] font-bold text-parchment">
-            Saturday: 12:00 - 23:00
-          </p>
-          <p className="my-1 text-[10px] font-bold text-parchment">
-            Sunday: Closed
+          <h2 className="m-0 font-montserrat text-2xl font-bold text-white">
+            Bella <span className="text-secondary">Tavola</span>
+          </h2>
+          <p className="mt-3 max-w-xs text-sm leading-6 text-neutral-content/80">
+            Good food. Good company. A little taste of Italy, right at your
+            table.
           </p>
         </section>
 
         <section>
-          <h5 className="my-2 font-montserrat text-sm text-marigold">
-            Location
-          </h5>
-          <p className="my-1 text-[10px] font-bold text-parchment">
+          <h3 className="mt-0 mb-4 font-montserrat text-sm font-bold tracking-wider text-secondary uppercase">
+            Opening hours
+          </h3>
+          <p className="my-2 text-sm text-neutral-content/85">
+            Monday – Friday <span className="text-white">11:00 – 22:00</span>
+          </p>
+          <p className="my-2 text-sm text-neutral-content/85">
+            Saturday <span className="text-white">12:00 – 23:00</span>
+          </p>
+          <p className="my-2 text-sm text-neutral-content/85">
+            Sunday <span className="text-white">Closed</span>
+          </p>
+        </section>
+
+        <section>
+          <h3 className="mt-0 mb-4 font-montserrat text-sm font-bold tracking-wider text-secondary uppercase">
+            Find us
+          </h3>
+          <p className="my-2 text-sm leading-6 text-neutral-content/85">
             Main Street 25
-          </p>
-          <p className="my-1 text-[10px] font-bold text-parchment">
+            <br />
             Banja Luka
-          </p>
-          <p className="my-1 text-[10px] font-bold text-parchment">
+            <br />
             Bosnia and Herzegovina
           </p>
         </section>

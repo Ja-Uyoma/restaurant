@@ -4,67 +4,77 @@ interface ReservationProps {
 
 export function Reservation(props: Readonly<ReservationProps>) {
   return (
-    <section className="px-5" id={props.id}>
-      <h2 className="my-5 text-left font-montserrat text-2xl text-espresso md:text-center">
-        Make a Reservation
-      </h2>
-
-      <form action="/" method="post" className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1 md:flex-row">
-          <label className="sr-only" htmlFor="name">
-            Name
-          </label>
-          <input
-            className="min-h-11 min-w-0 w-full flex-1 rounded border border-[#cbb9a8] bg-parchment px-3 py-1 text-base text-ink transition-colors placeholder:text-[#766b62] focus-visible:border-paprika focus-visible:outline-3 focus-visible:outline-[rgb(184_73_53/20%)] focus-visible:outline-offset-1"
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Name"
-          />
-
-          <label className="sr-only" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="min-h-11 min-w-0 w-full flex-1 rounded border border-[#cbb9a8] bg-parchment px-3 py-1 text-base text-ink transition-colors placeholder:text-[#766b62] focus-visible:border-paprika focus-visible:outline-3 focus-visible:outline-[rgb(184_73_53/20%)] focus-visible:outline-offset-1"
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-          />
-
-          <label className="sr-only" htmlFor="date">
-            Date
-          </label>
-          <input
-            className="min-h-11 min-w-0 w-full flex-1 rounded border border-[#cbb9a8] bg-parchment px-3 py-1 text-base text-ink transition-colors placeholder:text-[#766b62] focus-visible:border-paprika focus-visible:outline-3 focus-visible:outline-[rgb(184_73_53/20%)] focus-visible:outline-offset-1"
-            type="date"
-            name="date"
-            id="date"
-            placeholder="Date"
-          />
-
-          <label className="sr-only" htmlFor="guests">
-            Guests
-          </label>
-          <input
-            className="min-h-11 min-w-0 w-full flex-1 rounded border border-[#cbb9a8] bg-parchment px-3 py-1 text-base text-ink transition-colors placeholder:text-[#766b62] focus-visible:border-paprika focus-visible:outline-3 focus-visible:outline-[rgb(184_73_53/20%)] focus-visible:outline-offset-1"
-            type="number"
-            name="guests"
-            id="guests"
-            placeholder="Guests"
-            min="1"
-            max="15"
-          />
+    <section className="bg-base-100 px-5 py-20 sm:py-24" id={props.id}>
+      <div className="section-wrap">
+        <div className="mx-auto mb-10 max-w-xl text-center">
+          <p className="eyebrow mb-3">Make it a special evening</p>
+          <h2 className="section-title">Make a reservation</h2>
+          <p className="mt-4 text-base leading-7 text-base-content/70">
+            Gather your favourite people. We’ll take care of the rest.
+          </p>
         </div>
 
-        <button
-          type="submit"
-          className="w-full cursor-pointer rounded border-0 bg-paprika px-3 py-1 text-base text-white transition-colors hover:bg-[#a53c2b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-espresso"
+        <form
+          action="/"
+          method="post"
+          className="mx-auto grid max-w-4xl gap-5 rounded-box border border-base-300/80 bg-base-200 p-6 shadow-sm sm:grid-cols-2 sm:p-8 lg:grid-cols-4"
         >
-          Reserve
-        </button>
-      </form>
+          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+            Name
+            <input
+              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content placeholder:text-base-content/45"
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Your name"
+            />
+          </label>
+
+          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+            Email
+            <input
+              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content placeholder:text-base-content/45"
+              type="email"
+              name="email"
+              id="email"
+              placeholder="you@example.com"
+            />
+          </label>
+
+          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+            Date
+            <input
+              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content"
+              type="date"
+              name="date"
+              id="date"
+            />
+          </label>
+
+          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+            Guests
+            <input
+              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content placeholder:text-base-content/45"
+              type="number"
+              name="guests"
+              id="guests"
+              placeholder="2"
+              min="1"
+              max="15"
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="min-h-13 cursor-pointer rounded-full border-0 bg-primary px-6 py-3 font-bold text-primary-content transition-colors hover:bg-secondary sm:col-span-2 lg:col-span-4"
+          >
+            Reserve your table
+            <span aria-hidden="true" className="ml-2">
+              →
+            </span>
+          </button>
+        </form>
+      </div>
     </section>
   );
 }

@@ -58,24 +58,42 @@ export function MenuPage(props: Readonly<MenuPageProps>) {
   }, []);
 
   return (
-    <main id="menu" className="px-5">
-      <h2 className="mt-6 mb-1 text-center font-montserrat text-2xl text-espresso">
-        {props.title}
-      </h2>
+    <main id="menu" className="bg-base-100 px-5 py-20 sm:py-24">
+      <div className="section-wrap">
+        <header className="mx-auto mb-12 max-w-2xl text-center">
+          <p className="eyebrow mb-3">Made fresh, served with love</p>
+          <h2 className="section-title">{props.title}</h2>
+          <p className="mt-4 text-base leading-7 text-base-content/70">
+            From a little something to start to one last sweet bite, find your
+            new favourite at Bella Tavola.
+          </p>
+        </header>
 
-      {isLoading && <output>Loading menu…</output>}
-      {error && <p role="alert">{error}</p>}
-      {!isLoading && !error && (
-        <div className="grid gap-x-4 gap-y-2 md:grid-cols-3 md:grid-rows-[repeat(4,auto)]">
-          {menu.map((category) => (
-            <MenuCategory
-              key={category.title}
-              title={category.title}
-              items={category.items}
-            />
-          ))}
-        </div>
-      )}
+        {isLoading && (
+          <output className="block rounded-box bg-base-200 p-6 text-center text-base-content/70">
+            Preparing the menu…
+          </output>
+        )}
+        {error && (
+          <p
+            className="rounded-field bg-error px-4 py-3 text-error-content"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+        {!isLoading && !error && (
+          <div className="flex flex-col gap-12">
+            {menu.map((category) => (
+              <MenuCategory
+                key={category.title}
+                title={category.title}
+                items={category.items}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </main>
   );
 }

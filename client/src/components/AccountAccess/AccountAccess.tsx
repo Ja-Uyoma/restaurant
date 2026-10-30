@@ -158,112 +158,136 @@ export function AccountAccess() {
   return (
     <section
       aria-labelledby="account-heading"
-      className="mx-5 my-6 rounded-md border border-[#dfc7b6] bg-clay p-4"
+      className="border-y border-base-300 bg-secondary/35 px-5 py-10"
     >
-      <h2
-        id="account-heading"
-        className="mb-3 font-montserrat text-xl text-olive"
-      >
-        Customer and Staff Accounts
-      </h2>
-
-      {isLoading ? (
-        <p role="status">Checking account…</p>
-      ) : user ? (
-        <div className="flex flex-wrap items-center gap-3">
-          <p className="m-0">Signed in as {user.email}.</p>
-          <button
-            className="cursor-pointer rounded border-0 bg-paprika px-3 py-2 text-white"
-            type="button"
-            onClick={handleApiCheck}
-          >
-            Verify protected API access
-          </button>
-          <button
-            className="cursor-pointer rounded border border-espresso bg-transparent px-3 py-2 text-espresso"
-            type="button"
-            onClick={handleSignOut}
-          >
-            Sign out
-          </button>
+      <div className="section-wrap grid gap-8 md:grid-cols-[1fr_1.2fr] md:items-center">
+        <div>
+          <p className="eyebrow mb-3">Your table is waiting</p>
+          <h2 id="account-heading" className="section-title text-3xl">
+            Customer and staff accounts
+          </h2>
+          <p className="mt-3 max-w-md text-sm leading-6 text-base-content/70">
+            Sign in to access your account and enjoy your Bella Tavola
+            experience.
+          </p>
         </div>
-      ) : (
-        <>
-          <div className="mb-3 flex gap-2">
-            <button
-              className="cursor-pointer border-0 bg-transparent px-2 py-1 font-semibold text-espresso underline"
-              type="button"
-              aria-pressed={mode === "sign-in"}
-              onClick={() => setMode("sign-in")}
-            >
-              Sign in
-            </button>
-            <button
-              className="cursor-pointer border-0 bg-transparent px-2 py-1 font-semibold text-espresso underline"
-              type="button"
-              aria-pressed={mode === "sign-up"}
-              onClick={() => setMode("sign-up")}
-            >
-              Create account
-            </button>
-          </div>
 
-          <form className="flex flex-col gap-3 md:max-w-xl" onSubmit={handleSubmit}>
-            {mode === "sign-up" && (
-              <label className="flex flex-col gap-1">
-                Name
-                <input
-                  autoComplete="name"
-                  className="rounded border border-[#cbb9a8] bg-parchment px-3 py-2 text-ink"
-                  name="name"
-                  required
-                />
-              </label>
-            )}
-            <label className="flex flex-col gap-1">
-              Email
-              <input
-                autoComplete="email"
-                className="rounded border border-[#cbb9a8] bg-parchment px-3 py-2 text-ink"
-                name="email"
-                type="email"
-                required
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              Password
-              <input
-                autoComplete={
-                  mode === "sign-up" ? "new-password" : "current-password"
-                }
-                className="rounded border border-[#cbb9a8] bg-parchment px-3 py-2 text-ink"
-                minLength={8}
-                name="password"
-                type="password"
-                required
-              />
-            </label>
-            <button
-              className="cursor-pointer rounded border-0 bg-paprika px-3 py-2 text-white disabled:cursor-wait disabled:opacity-60"
-              disabled={isSubmitting}
-              type="submit"
-            >
-              {isSubmitting
-                ? "Please wait…"
-                : mode === "sign-up"
-                  ? "Create account"
-                  : "Sign in"}
-            </button>
-          </form>
-        </>
-      )}
+        <div className="rounded-box border border-base-300/80 bg-base-100 p-5 shadow-sm sm:p-7">
+          {isLoading ? (
+            <p className="m-0 text-sm text-base-content/70" role="status">
+              Checking account…
+            </p>
+          ) : user ? (
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <p className="m-0 text-sm text-base-content">
+                Signed in as <span className="font-bold">{user.email}</span>.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  className="min-h-11 cursor-pointer rounded-full border-0 bg-primary px-5 py-2 text-sm font-bold text-primary-content transition-colors hover:bg-secondary"
+                  type="button"
+                  onClick={handleApiCheck}
+                >
+                  Verify access
+                </button>
+                <button
+                  className="min-h-11 cursor-pointer rounded-full border border-base-300 bg-base-100 px-5 py-2 text-sm font-bold text-base-content transition-colors hover:bg-base-200"
+                  type="button"
+                  onClick={handleSignOut}
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="mb-5 flex gap-2">
+                <button
+                  className={`cursor-pointer rounded-full px-4 py-2 text-sm font-bold transition-colors ${mode === "sign-in" ? "bg-primary text-primary-content" : "bg-base-200 text-base-content hover:bg-base-300"}`}
+                  type="button"
+                  aria-pressed={mode === "sign-in"}
+                  onClick={() => setMode("sign-in")}
+                >
+                  Sign in
+                </button>
+                <button
+                  className={`cursor-pointer rounded-full px-4 py-2 text-sm font-bold transition-colors ${mode === "sign-up" ? "bg-primary text-primary-content" : "bg-base-200 text-base-content hover:bg-base-300"}`}
+                  type="button"
+                  aria-pressed={mode === "sign-up"}
+                  onClick={() => setMode("sign-up")}
+                >
+                  Create account
+                </button>
+              </div>
 
-      {message && <p role="status">{message}</p>}
-      {error && (
-        <p className="text-paprika" role="alert">
-          {error}
-        </p>
-      )}
+              <form
+                className="grid gap-4 sm:grid-cols-2"
+                onSubmit={handleSubmit}
+              >
+                {mode === "sign-up" && (
+                  <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+                    Name
+                    <input
+                      autoComplete="name"
+                      className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 font-normal"
+                      name="name"
+                      required
+                    />
+                  </label>
+                )}
+                <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+                  Email
+                  <input
+                    autoComplete="email"
+                    className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 font-normal"
+                    name="email"
+                    type="email"
+                    required
+                  />
+                </label>
+                <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+                  Password
+                  <input
+                    autoComplete={
+                      mode === "sign-up" ? "new-password" : "current-password"
+                    }
+                    className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 font-normal"
+                    minLength={8}
+                    name="password"
+                    type="password"
+                    required
+                  />
+                </label>
+                <button
+                  className="min-h-12 cursor-pointer self-end rounded-full border-0 bg-primary px-5 py-3 font-bold text-primary-content transition-colors hover:bg-secondary disabled:cursor-wait disabled:opacity-60 sm:col-span-2"
+                  disabled={isSubmitting}
+                  type="submit"
+                >
+                  {isSubmitting
+                    ? "Please wait…"
+                    : mode === "sign-up"
+                      ? "Create account"
+                      : "Sign in"}
+                </button>
+              </form>
+            </>
+          )}
+
+          {message && (
+            <p className="mt-4 rounded-field bg-success px-4 py-3 text-sm text-success-content" role="status">
+              {message}
+            </p>
+          )}
+          {error && (
+            <p
+              className="mt-4 rounded-field bg-error px-4 py-3 text-sm text-error-content"
+              role="alert"
+            >
+              {error}
+            </p>
+          )}
+        </div>
+      </div>
     </section>
   );
 }

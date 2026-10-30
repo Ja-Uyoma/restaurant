@@ -8,7 +8,7 @@ import { AccountAccess } from "./components/AccountAccess/AccountAccess";
 
 function App() {
   return (
-    <>
+    <div data-theme="lemonade" className="min-h-screen bg-base-100">
       <Header />
 
       <Hero
@@ -27,7 +27,7 @@ function App() {
       <Reservation id="reservation" />
 
       <Footer />
-    </>
+    </div>
   );
 }
 

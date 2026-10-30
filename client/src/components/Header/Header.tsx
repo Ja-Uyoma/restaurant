@@ -8,14 +8,22 @@ export function Header() {
   }
 
   return (
-    <header className="flex flex-wrap items-center justify-between bg-espresso text-white">
-      <section className="flex flex-[1_1_100%] items-center justify-between md:flex-none">
-        <h1 className="my-[0.2em] bg-espresso px-[1em] py-[0.4em] font-montserrat text-[1.75rem] text-white md:p-[1em]">
-          Bella Tavola
-        </h1>
+    <header className="sticky top-0 z-30 border-b border-base-300/70 bg-base-100/95 shadow-sm backdrop-blur-md">
+      <div className="section-wrap flex min-h-18 flex-wrap items-center justify-between gap-x-8">
+        <a
+          className="flex items-center gap-3 rounded-sm text-base-content no-underline"
+          href="#home"
+        >
+          <span className="grid size-10 place-items-center rounded-full bg-primary text-xl text-primary-content">
+            B
+          </span>
+          <span className="font-montserrat text-xl font-bold tracking-tight">
+            Bella <span className="text-primary">Tavola</span>
+          </span>
+        </a>
 
         <button
-          className="block cursor-pointer border-0 bg-transparent px-[0.5em] py-[0.25em] text-[2rem] leading-none md:hidden"
+          className="grid size-11 cursor-pointer place-items-center rounded-full border border-base-300 bg-base-100 text-xl text-base-content transition-colors hover:bg-base-200 md:hidden"
           type="button"
           aria-label="Toggle navigation menu"
           aria-expanded={isOpen}
@@ -24,46 +32,30 @@ export function Header() {
         >
           ☰
         </button>
-      </section>
 
-      <nav className="flex-[1_1_100%] md:flex-[1_1_auto]">
-        <ul
-          className={`m-0 list-none divide-y divide-[#62514a] bg-espresso p-0 text-white md:flex md:divide-y-0 md:border-0 md:px-[1em] ${isOpen ? "block border border-[#62514a]" : "hidden"}`}
-        >
-          <li className="md:flex-1">
-            <a
-              className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#home"
-            >
-              Home
-            </a>
-          </li>
-          <li className="md:flex-1">
-            <a
-              className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#menu"
-            >
-              Menu
-            </a>
-          </li>
-          <li className="md:flex-1">
-            <a
-              className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#about-us"
-            >
-              About
-            </a>
-          </li>
-          <li className="md:flex-1">
-            <a
-              className="block rounded px-[1em] py-[0.8em] font-medium text-white transition-colors duration-150 hover:bg-marigold hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-parchment md:px-[0.75em] md:py-[0.45em] md:text-center"
-              href="#reservation"
-            >
-              Reservation
-            </a>
-          </li>
-        </ul>
-      </nav>
+        <nav className="flex-[1_1_100%] md:flex-[0_1_auto]">
+          <ul
+            id="main-menu"
+            className={`${isOpen ? "flex" : "hidden"} m-0 list-none flex-col gap-1 border-t border-base-300 py-3 md:flex md:flex-row md:items-center md:gap-2 md:border-0 md:py-0`}
+          >
+            {[
+              ["Home", "#home"],
+              ["Menu", "#menu"],
+              ["About", "#about-us"],
+              ["Reservation", "#reservation"],
+            ].map(([label, href]) => (
+              <li key={href}>
+                <a
+                  className="block rounded-full px-4 py-2 text-sm font-semibold text-base-content no-underline transition-colors hover:bg-secondary hover:text-secondary-content"
+                  href={href}
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 }
