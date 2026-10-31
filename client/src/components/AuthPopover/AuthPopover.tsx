@@ -1,15 +1,27 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { apiUrl } from "../../lib/api";
-import { authClient } from "../../lib/auth";
+import { authClient, isLocalAuth } from "../../lib/auth";
+import {
+  localAuth,
+  type AppRole,
+  type LocalAuthUser,
+} from "../../lib/localAuth";
 
 interface AccountUser {
+  id: string;
   email: string | null;
+  username: string | null;
+  name: string | null;
+  role: AppRole | null;
 }
 
 interface ApiMeResponse {
   user?: {
     id: string;
     email: string | null;
+    username: string | null;
+    name: string | null;
+    role: AppRole;
   };
   error?: string;
 }
@@ -26,6 +38,18 @@ function getFormValue(formData: FormData, name: string): string {
     throw new Error(`Missing ${name} field.`);
   }
   return value;
+}
+
+function getLocalAccount(user: LocalAuthUser | null): AccountUser | null {
+  return user
+    ? {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        name: user.name,
+        role: user.role,
+      }
+    : null;
 }
 
 export function AuthPopover() {
@@ -46,28 +70,49 @@ export function AuthPopover() {
   useEffect(() => {
     let isMounted = true;
 
-    authClient
-      .getSession()
-      .then(({ data, error: sessionError }) => {
-        if (sessionError) {
-          throw new Error(sessionError.message);
+    async function loadSession() {
+      try {
+        if (isLocalAuth) {
+          const localUser = await localAuth.getSession();
+          if (isMounted) {
+            setUser(getLocalAccount(localUser));
+          }
+        } else {
+          if (!authClient) {
+            throw new Error("Neon Auth is not configured.");
+          }
+          const { data, error: sessionError } = await authClient.getSession();
+          if (sessionError) {
+            throw new Error(sessionError.message);
+          }
+          if (isMounted) {
+            setUser(
+              data?.user
+                ? {
+                    id: data.user.id,
+                    email: data.user.email,
+                    username: null,
+                    name: data.user.name,
+                    role: null,
+                  }
+                : null,
+            );
+          }
         }
-        if (isMounted) {
-          setUser(data?.user ?? null);
-        }
-      })
-      .catch((sessionError: unknown) => {
+      } catch (sessionError: unknown) {
         if (isMounted) {
           setError(
             getErrorMessage(sessionError, "Unable to load your account."),
           );
         }
-      })
-      .finally(() => {
+      } finally {
         if (isMounted) {
           setIsLoading(false);
         }
-      });
+      }
+    }
+
+    void loadSession();
 
     return () => {
       isMounted = false;
@@ -138,24 +183,58 @@ export function AuthPopover() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const email = getFormValue(formData, "email");
+      const usernameOrEmail = getFormValue(
+        formData,
+        isLocalAuth ? "username" : "email",
+      );
       const password = getFormValue(formData, "password");
-      const result =
-        mode === "sign-up"
-          ? await authClient.signUp.email({
-              name: getFormValue(formData, "name"),
-              email,
-              password,
-            })
-          : await authClient.signIn.email({ email, password });
+      if (isLocalAuth) {
+        const account =
+          mode === "sign-up"
+            ? await localAuth.signUp(
+                getFormValue(formData, "name"),
+                usernameOrEmail,
+                password,
+              )
+            : await localAuth.signIn(usernameOrEmail, password);
+        setUser(getLocalAccount(account));
+      } else {
+        if (!authClient) {
+          throw new Error("Neon Auth is not configured.");
+        }
+        const result =
+          mode === "sign-up"
+            ? await authClient.signUp.email({
+                name: getFormValue(formData, "name"),
+                email: usernameOrEmail,
+                password,
+              })
+            : await authClient.signIn.email({
+                email: usernameOrEmail,
+                password,
+              });
 
-      if (result.error) {
-        throw new Error(result.error.message);
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+        const account = result.data?.user;
+        setUser(
+          account
+            ? {
+                id: account.id,
+                email: account.email,
+                username: null,
+                name: account.name,
+                role: null,
+              }
+            : null,
+        );
       }
-      setUser(result.data?.user ?? null);
       if (mode === "sign-up") {
         setMessage(
-          "Account created. Check your email if verification is required.",
+          isLocalAuth
+            ? "Local account created with the customer role."
+            : "Account created. Check your email if verification is required.",
         );
       } else {
         setMessage("You are signed in.");
@@ -176,9 +255,16 @@ export function AuthPopover() {
     setIsSigningOut(true);
 
     try {
-      const result = await authClient.signOut();
-      if (result.error) {
-        throw new Error(result.error.message);
+      if (isLocalAuth) {
+        await localAuth.signOut();
+      } else {
+        if (!authClient) {
+          throw new Error("Neon Auth is not configured.");
+        }
+        const result = await authClient.signOut();
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
       }
       setUser(null);
       setMessage("You are signed out.");
@@ -195,18 +281,24 @@ export function AuthPopover() {
     setIsCheckingAccess(true);
 
     try {
-      const tokenResult = await authClient.token();
-      if (tokenResult.error) {
-        throw new Error(tokenResult.error.message);
-      }
-      if (!tokenResult.data?.token) {
-        throw new Error("A sign-in token was not returned.");
+      const headers = new Headers();
+      if (!isLocalAuth) {
+        if (!authClient) {
+          throw new Error("Neon Auth is not configured.");
+        }
+        const tokenResult = await authClient.token();
+        if (tokenResult.error) {
+          throw new Error(tokenResult.error.message);
+        }
+        if (!tokenResult.data?.token) {
+          throw new Error("A sign-in token was not returned.");
+        }
+        headers.set("Authorization", `Bearer ${tokenResult.data.token}`);
       }
 
       const response = await fetch(apiUrl("/api/me"), {
-        headers: {
-          Authorization: `Bearer ${tokenResult.data.token}`,
-        },
+        credentials: isLocalAuth ? "include" : "same-origin",
+        headers,
       });
       const result = (await response.json()) as ApiMeResponse;
 
@@ -217,8 +309,32 @@ export function AuthPopover() {
         throw new Error("The API returned an invalid response.");
       }
 
+      const roleCheckResponse = await fetch(
+        apiUrl(`/api/${result.user.role}/check`),
+        {
+          credentials: isLocalAuth ? "include" : "same-origin",
+          headers,
+        },
+      );
+      if (!roleCheckResponse.ok) {
+        const roleCheckResult = (await roleCheckResponse.json()) as {
+          error?: string;
+        };
+        throw new Error(
+          roleCheckResult.error || "The API rejected this role.",
+        );
+      }
+
+      setUser((currentUser) =>
+        currentUser
+          ? {
+              ...currentUser,
+              ...result.user,
+            }
+          : currentUser,
+      );
       setMessage(
-        `Protected API verified for ${result.user.email || result.user.id}.`,
+        `${result.user.role} access verified for ${result.user.email || result.user.username || result.user.id}.`,
       );
     } catch (apiError: unknown) {
       setError(
@@ -260,7 +376,14 @@ export function AuthPopover() {
             <div className="grid gap-3">
               <p className="m-0 text-sm leading-6 text-base-content">
                 Signed in as{" "}
-                <span className="font-bold">{user.email || "your account"}</span>.
+                <span className="font-bold">
+                  {user.username || user.email || user.name || "your account"}
+                </span>
+                {user.role && (
+                  <span className="mt-1 block text-xs font-semibold uppercase tracking-wide text-base-content/60">
+                    {user.role} account
+                  </span>
+                )}
               </p>
               <button
                 className="min-h-11 cursor-pointer rounded-full border-0 bg-primary px-4 py-2 text-sm font-bold text-primary-content transition-colors hover:bg-secondary disabled:cursor-wait disabled:opacity-60"
@@ -387,13 +510,15 @@ export function AuthPopover() {
               </label>
             )}
             <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
-              Email
+              {isLocalAuth ? "Username" : "Email"}
               <input
-                autoComplete="email"
+                autoComplete={isLocalAuth ? "username" : "email"}
                 autoFocus={mode === "sign-in"}
                 className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 font-normal"
-                name="email"
-                type="email"
+                maxLength={isLocalAuth ? 32 : undefined}
+                minLength={isLocalAuth ? 3 : undefined}
+                name={isLocalAuth ? "username" : "email"}
+                type={isLocalAuth ? "text" : "email"}
                 required
               />
             </label>
