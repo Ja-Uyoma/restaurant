@@ -11,6 +11,8 @@
     "build": "tsc && mkdir -p dist/migrations && cp -R migrations/. dist/migrations/",
     "start": "node --env-file-if-exists=../.env.local dist/index.js",
     "migrate": "node --env-file-if-exists=../.env.local --import tsx migrate.ts",
+    "seed:local-users": "node --env-file-if-exists=../.env.local --import tsx seed-local-users.ts",
+    "set-role": "node --env-file-if-exists=../.env.local --import tsx set-user-role.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
