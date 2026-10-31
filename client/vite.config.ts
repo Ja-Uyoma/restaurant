@@ -5,14 +5,10 @@ import { fileURLToPath } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 
-const projectRoot = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "..",
-);
 const clientRoot = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, projectRoot, "");
+  const env = loadEnv(mode, clientRoot, "");
   const authUrl =
     process.env.VITE_NEON_AUTH_URL ||
     env.VITE_NEON_AUTH_URL ||
@@ -27,7 +23,7 @@ export default defineConfig(({ mode }) => {
   }
   if (authMode === "local" && !env.LOCAL_DATABASE_URL) {
     throw new Error(
-      "Local auth requires LOCAL_DATABASE_URL in the root .env.local file",
+      "Local auth requires LOCAL_DATABASE_URL in client/.env.local",
     );
   }
   if (mode === "production" && (authMode !== "neon" || !authUrl)) {

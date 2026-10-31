@@ -9,6 +9,7 @@ import express, {
 } from "express";
 import { createRemoteJWKSet, errors, jwtVerify, type JWTPayload } from "jose";
 import pg from "pg";
+import Stripe from "stripe";
 import {
   createLocalSession,
   getClearedSessionCookie,
@@ -44,6 +45,7 @@ declare global {
 
 type MenuRow = {
   category_name: string;
+  item_id: string | null;
   item_name: string | null;
   item_description: string | null;
   item_price: number | null;
@@ -54,6 +56,7 @@ type MenuRow = {
 interface MenuCategory {
   title: string;
   items: {
+    id: string;
     imgUrl: string;
     imgAlt: string;
     itemName: string;
@@ -67,11 +70,16 @@ const isLocalDatabase = Boolean(process.env.LOCAL_DATABASE_URL);
 const databaseUrl = process.env.LOCAL_DATABASE_URL || process.env.DATABASE_URL;
 const authBaseUrl = process.env.NEON_AUTH_BASE_URL;
 const authJwksUrl = process.env.NEON_AUTH_JWKS_URL;
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const isProduction = process.env.NODE_ENV === "production";
 const localAuthEnabled =
   isLocalDatabase &&
   !isProduction &&
   process.env.LOCAL_AUTH_ENABLED !== "false";
+const clientBaseUrl =
+  process.env.CLIENT_BASE_URL ||
+  (!isProduction && isLocalDatabase ? "http://localhost:5173" : undefined);
 
 if (!databaseUrl) {
   throw new Error("LOCAL_DATABASE_URL or DATABASE_URL must be set");
@@ -96,6 +104,7 @@ const pool = new Pool({
   idleTimeoutMillis: 30_000,
   connectionTimeoutMillis: 10_000,
 });
+const stripe = stripeSecretKey ? new Stripe(stripeSecretKey) : null;
 const authJwks = authJwksUrl ? createRemoteJWKSet(new URL(authJwksUrl)) : null;
 const authIssuer = authBaseUrl ? new URL(authBaseUrl).origin : null;
 const localAuthSecret =
@@ -119,6 +128,106 @@ app.use(
     allowedHeaders: ["Authorization", "Content-Type"],
   }),
 );
+
+app.post(
+  "/api/webhooks/stripe",
+  express.raw({ type: "application/json", limit: "1mb" }),
+  async (request, response, next) => {
+    if (!stripe || !stripeWebhookSecret) {
+      response.status(503).json({ error: "Stripe webhooks are not configured" });
+      return;
+    }
+
+    const signature = request.get("stripe-signature");
+    if (!signature || !Buffer.isBuffer(request.body)) {
+      response.status(400).json({ error: "A valid Stripe signature is required" });
+      return;
+    }
+
+    let event: Stripe.Event;
+    try {
+      event = stripe.webhooks.constructEvent(
+        request.body,
+        signature,
+        stripeWebhookSecret,
+      );
+    } catch (error) {
+      if (error instanceof Stripe.errors.StripeSignatureVerificationError) {
+        response.status(400).json({ error: "Invalid Stripe signature" });
+        return;
+      }
+      next(error);
+      return;
+    }
+
+    if (
+      event.type !== "checkout.session.completed" &&
+      event.type !== "checkout.session.async_payment_succeeded"
+    ) {
+      response.json({ received: true });
+      return;
+    }
+
+    const session = event.data.object as Stripe.Checkout.Session;
+    if (session.payment_status !== "paid" || session.mode !== "payment") {
+      response.json({ received: true });
+      return;
+    }
+
+    const orderId = session.metadata?.orderId;
+    if (
+      !orderId ||
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        orderId,
+      ) ||
+      session.client_reference_id !== orderId
+    ) {
+      response.status(400).json({ error: "Stripe session has invalid order metadata" });
+      return;
+    }
+
+    const { rows } = await pool.query<{
+      id: string;
+      amount_total: string;
+    }>(
+      `SELECT
+         orders.id,
+         COALESCE(
+           SUM((order_items.unit_price * 100)::bigint * order_items.quantity),
+           0
+         )::text AS amount_total
+       FROM orders
+       LEFT JOIN order_items ON order_items.order_id = orders.id
+       WHERE orders.id = $1 AND orders.stripe_session_id = $2
+       GROUP BY orders.id`,
+      [orderId, session.id],
+    );
+    const order = rows[0];
+    if (
+      !order ||
+      session.currency !== "usd" ||
+      session.amount_total === null ||
+      BigInt(order.amount_total) !== BigInt(session.amount_total)
+    ) {
+      response.status(400).json({ error: "Stripe session does not match an order" });
+      return;
+    }
+
+    const updateResult = await pool.query(
+      `UPDATE orders
+       SET status = 'paid', paid_at = COALESCE(paid_at, now())
+       WHERE id = $1 AND stripe_session_id = $2 AND status IN ('pending', 'paid')`,
+      [orderId, session.id],
+    );
+    if (updateResult.rowCount !== 1) {
+      response.status(409).json({ error: "Order is not eligible for payment" });
+      return;
+    }
+
+    response.json({ received: true });
+  },
+);
+
 app.use(express.json({ limit: "1mb" }));
 
 function requireLocalAuth(
@@ -175,6 +284,28 @@ function getStringField(body: unknown, key: string): string | null {
   }
   const value = (body as Record<string, unknown>)[key];
   return typeof value === "string" ? value : null;
+}
+
+function priceToCents(price: string): number {
+  const match = /^(\d+)(?:\.(\d{1,2}))?$/.exec(price);
+  if (!match) {
+    throw new Error(`Invalid menu price in database: ${price}`);
+  }
+
+  const cents = Number(match[1]) * 100 + Number((match[2] || "").padEnd(2, "0"));
+  if (!Number.isSafeInteger(cents)) {
+    throw new Error("Menu price exceeds the supported checkout amount");
+  }
+  return cents;
+}
+
+function isValidMenuItemId(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    /^[1-9]\d*$/.test(value) &&
+    value.length <= 19 &&
+    BigInt(value) <= 9223372036854775807n
+  );
 }
 
 function setLocalSession(response: Response, userId: string): Promise<void> {
@@ -327,6 +458,7 @@ app.get("/api/menu", async (_request, response) => {
   const { rows } = await pool.query<MenuRow>(`
     SELECT
       category.name AS category_name,
+      item.id::text AS item_id,
       item.name AS item_name,
       item.description AS item_description,
       item.price::float8 AS item_price,
@@ -348,6 +480,7 @@ app.get("/api/menu", async (_request, response) => {
     }
 
     if (
+      row.item_id !== null &&
       row.item_name !== null &&
       row.item_description !== null &&
       row.item_price !== null &&
@@ -355,6 +488,7 @@ app.get("/api/menu", async (_request, response) => {
       row.image_alt !== null
     ) {
       category.items.push({
+        id: row.item_id,
         imgUrl: row.image_url,
         imgAlt: row.image_alt,
         itemName: row.item_name,
@@ -365,6 +499,187 @@ app.get("/api/menu", async (_request, response) => {
   }
 
   response.json(categories);
+});
+
+app.post("/api/checkout-session", requireAuth, async (request, response) => {
+  if (!stripe || !stripeWebhookSecret || !clientBaseUrl) {
+    response.status(503).json({ error: "Stripe checkout is not configured" });
+    return;
+  }
+  if (!request.auth?.sub || !request.authProvider) {
+    response.status(401).json({ error: "Authentication required" });
+    return;
+  }
+
+  let baseUrl: URL;
+  try {
+    baseUrl = new URL(clientBaseUrl);
+  } catch {
+    response.status(503).json({ error: "CLIENT_BASE_URL is not a valid URL" });
+    return;
+  }
+  if (baseUrl.protocol !== "http:" && baseUrl.protocol !== "https:") {
+    response.status(503).json({ error: "CLIENT_BASE_URL must use HTTP or HTTPS" });
+    return;
+  }
+
+  const body =
+    typeof request.body === "object" && request.body !== null
+      ? (request.body as Record<string, unknown>)
+      : null;
+  const rawItems = body?.items;
+  if (!Array.isArray(rawItems) || rawItems.length < 1 || rawItems.length > 20) {
+    response.status(400).json({ error: "Cart must contain between 1 and 20 items" });
+    return;
+  }
+
+  const items: { menuItemId: string; quantity: number }[] = [];
+  const seenIds = new Set<string>();
+  for (const rawItem of rawItems) {
+    if (typeof rawItem !== "object" || rawItem === null) {
+      response.status(400).json({ error: "Each cart item must be an object" });
+      return;
+    }
+
+    const item = rawItem as Record<string, unknown>;
+    const menuItemId = item.menuItemId;
+    const quantity = item.quantity;
+    if (
+      !isValidMenuItemId(menuItemId) ||
+      typeof quantity !== "number" ||
+      !Number.isInteger(quantity) ||
+      quantity < 1 ||
+      quantity > 20
+    ) {
+      response.status(400).json({
+        error: "Each cart item needs a valid menuItemId and a quantity from 1 to 20",
+      });
+      return;
+    }
+    if (seenIds.has(menuItemId)) {
+      response.status(400).json({ error: "Cart item IDs must be unique" });
+      return;
+    }
+
+    seenIds.add(menuItemId);
+    items.push({ menuItemId, quantity });
+  }
+
+  const itemIds = items.map((item) => item.menuItemId);
+  const { rows: menuRows } = await pool.query<{
+    id: string;
+    name: string;
+    price: string;
+  }>(
+    `SELECT id::text, name, price::text
+     FROM menu_items
+     WHERE id = ANY($1::bigint[]) AND available = true`,
+    [itemIds],
+  );
+  if (menuRows.length !== items.length) {
+    response.status(400).json({ error: "Cart contains unavailable menu items" });
+    return;
+  }
+
+  const menuById = new Map<
+    string,
+    { id: string; name: string; price: string; unitAmount: number }
+  >();
+  for (const menuItem of menuRows) {
+    menuById.set(menuItem.id, {
+      ...menuItem,
+      unitAmount: priceToCents(menuItem.price),
+    });
+  }
+  const database = await pool.connect();
+  let orderId: string;
+  try {
+    await database.query("BEGIN");
+    const { rows: orderRows } = await database.query<{ id: string }>(
+      `INSERT INTO orders (customer_id)
+       VALUES ($1)
+       RETURNING id`,
+      [`${request.authProvider}:${request.auth.sub}`],
+    );
+    const insertedOrderId = orderRows[0]?.id;
+    if (!insertedOrderId) {
+      throw new Error("Unable to create the order");
+    }
+    orderId = insertedOrderId;
+
+    for (const item of items) {
+      const menuItem = menuById.get(item.menuItemId);
+      if (!menuItem) {
+        throw new Error("A validated menu item is missing from the order");
+      }
+      await database.query(
+        `INSERT INTO order_items (order_id, menu_item_id, item_name, quantity, unit_price)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [orderId, menuItem.id, menuItem.name, item.quantity, menuItem.price],
+      );
+    }
+    await database.query("COMMIT");
+  } catch (error) {
+    try {
+      await database.query("ROLLBACK");
+    } catch (rollbackError) {
+      throw new AggregateError(
+        [error, rollbackError],
+        "Order creation failed and the database transaction could not be rolled back",
+      );
+    }
+    throw error;
+  } finally {
+    database.release();
+  }
+
+  const successUrl =
+    `${new URL("/", baseUrl).toString()}?checkout=success` +
+    "&session_id={CHECKOUT_SESSION_ID}";
+  const cancelUrl = `${new URL("/", baseUrl).toString()}?checkout=cancelled`;
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    client_reference_id: orderId,
+    metadata: { orderId },
+    line_items: items.map((item) => {
+      const menuItem = menuById.get(item.menuItemId);
+      if (!menuItem) {
+        throw new Error("A validated menu item is missing from the checkout");
+      }
+      return {
+        quantity: item.quantity,
+        price_data: {
+          currency: "usd",
+          unit_amount: menuItem.unitAmount,
+          product_data: { name: menuItem.name },
+        },
+      };
+    }),
+    success_url: successUrl,
+    cancel_url: cancelUrl,
+  });
+
+  if (!session.url) {
+    await stripe.checkout.sessions.expire(session.id);
+    throw new Error("Stripe did not return a checkout URL");
+  }
+
+  const updateResult = await pool.query(
+    `UPDATE orders
+     SET stripe_session_id = $2
+     WHERE id = $1 AND status = 'pending'`,
+    [orderId, session.id],
+  );
+  if (updateResult.rowCount !== 1) {
+    try {
+      await stripe.checkout.sessions.expire(session.id);
+    } catch (error) {
+      console.error("Could not expire an unlinked Stripe checkout session", error);
+    }
+    throw new Error("Unable to associate the Stripe session with its order");
+  }
+
+  response.status(201).json({ orderId, checkoutUrl: session.url });
 });
 
 async function requireAuth(
