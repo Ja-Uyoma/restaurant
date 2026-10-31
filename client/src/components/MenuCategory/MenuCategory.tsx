@@ -12,6 +12,9 @@ interface MenuItemData {
 interface MenuCategoryProps {
   title: string;
   items: MenuItemData[];
+  orderingItemId: string | null;
+  isCheckoutPending: boolean;
+  onOrderNow: (menuItemId: string) => void;
 }
 
 export function MenuCategory(props: Readonly<MenuCategoryProps>) {
@@ -24,8 +27,14 @@ export function MenuCategory(props: Readonly<MenuCategoryProps>) {
       </h3>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {props.items.map(({ id, ...item }) => (
-          <MenuItem key={id} {...item} />
+        {props.items.map((item) => (
+          <MenuItem
+            key={item.id}
+            {...item}
+            isOrdering={props.orderingItemId === item.id}
+            isCheckoutPending={props.isCheckoutPending}
+            onOrderNow={props.onOrderNow}
+          />
         ))}
       </div>
     </section>

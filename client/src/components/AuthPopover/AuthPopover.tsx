@@ -133,6 +133,23 @@ export function AuthPopover() {
   }, [isDialogOpen]);
 
   useEffect(() => {
+    function handleSignInRequired() {
+      setIsPopoverOpen(true);
+      setMode("sign-in");
+      setError("");
+      setMessage("");
+      setIsDialogOpen(true);
+    }
+
+    window.addEventListener("restaurant:sign-in-required", handleSignInRequired);
+    return () =>
+      window.removeEventListener(
+        "restaurant:sign-in-required",
+        handleSignInRequired,
+      );
+  }, []);
+
+  useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
       if (
         event.target instanceof Node &&

@@ -682,6 +682,78 @@ app.post("/api/checkout-session", requireAuth, async (request, response) => {
   response.status(201).json({ orderId, checkoutUrl: session.url });
 });
 
+app.get(
+  "/api/orders/by-session/:sessionId",
+  requireAuth,
+  async (request, response) => {
+    if (!request.auth?.sub || !request.authProvider) {
+      response.status(401).json({ error: "Authentication required" });
+      return;
+    }
+
+    const sessionId = request.params.sessionId;
+    if (
+      typeof sessionId !== "string" ||
+      !/^cs_(test|live)_[A-Za-z0-9]+$/.test(sessionId)
+    ) {
+      response.status(400).json({ error: "Invalid checkout session ID" });
+      return;
+    }
+
+    const { rows } = await pool.query<{
+      id: string;
+      status: "pending" | "paid" | "failed" | "canceled";
+      currency: string;
+      paid_at: Date | null;
+      total: string;
+    }>(
+      `SELECT
+         orders.id,
+         orders.status,
+         orders.currency,
+         orders.paid_at,
+         COALESCE(
+           SUM(order_items.unit_price * order_items.quantity),
+           0
+         )::text AS total
+       FROM orders
+       LEFT JOIN order_items ON order_items.order_id = orders.id
+       WHERE orders.stripe_session_id = $1
+         AND orders.customer_id = $2
+       GROUP BY orders.id`,
+      [sessionId, `${request.authProvider}:${request.auth.sub}`],
+    );
+    const order = rows[0];
+    if (!order) {
+      response.status(404).json({ error: "Order not found" });
+      return;
+    }
+
+    const { rows: items } = await pool.query<{
+      name: string;
+      quantity: number;
+      unit_price: string;
+    }>(
+      `SELECT item_name AS name, quantity, unit_price::text
+       FROM order_items
+       WHERE order_id = $1
+       ORDER BY id`,
+      [order.id],
+    );
+
+    response.json({
+      order: {
+        id: order.id,
+        status: order.status,
+        currency: order.currency,
+        paidAt: order.paid_at,
+        total: order.total,
+        items,
+      },
+    });
+  },
+);
+
 async function requireAuth(
   request: Request,
   response: Response,

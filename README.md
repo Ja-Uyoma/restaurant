@@ -101,6 +101,12 @@ example, send `POST /api/checkout-session` with
 `{"items":[{"menuItemId":"1","quantity":2}]}` while authenticated. A successful
 response contains `orderId` and `checkoutUrl`.
 
+Each menu item also has an **Order Now** button that creates a one-item
+checkout session and redirects to Stripe Checkout. After returning, the app
+checks `GET /api/orders/by-session/:sessionId` several times for the signed-in
+owner's order; the page only confirms payment after the signed webhook marks it
+paid. If webhook delivery is delayed, the page offers a manual status retry.
+
 Add your Stripe **test-mode** secret key and webhook secret to
 `server/.env.local`. The local client URL defaults to `http://localhost:5173`;
 set `CLIENT_BASE_URL` there only if your Vite server uses a different address.

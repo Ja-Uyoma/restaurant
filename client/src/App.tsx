@@ -4,8 +4,24 @@ import { AboutUs } from "./components/AboutUs/AboutUs";
 import { Reservation } from "./components/Reservation/Reservation";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
+import { CheckoutResult } from "./components/CheckoutResult/CheckoutResult";
 
 function App() {
+  const searchParams = new URLSearchParams(window.location.search);
+  const checkoutState = searchParams.get("checkout");
+  if (checkoutState === "success" || checkoutState === "cancelled") {
+    return (
+      <div data-theme="lemonade" className="min-h-screen bg-base-100">
+        <Header />
+        <CheckoutResult
+          sessionId={searchParams.get("session_id")}
+          cancelled={checkoutState === "cancelled"}
+        />
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div data-theme="lemonade" className="min-h-screen bg-base-100">
       <Header />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MenuCategory } from "../MenuCategory/MenuCategory";
-import { apiUrl } from "../../lib/api";
+import { apiUrl, authenticatedApiRequest } from "../../lib/api";
 
 interface MenuCategoryData {
   title: string;
@@ -22,6 +22,9 @@ export function MenuPage(props: Readonly<MenuPageProps>) {
   const [menu, setMenu] = useState<MenuCategoryData[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [orderingItemId, setOrderingItemId] = useState<string | null>(null);
+  const [isCheckoutPending, setIsCheckoutPending] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -58,6 +61,45 @@ export function MenuPage(props: Readonly<MenuPageProps>) {
     };
   }, []);
 
+  async function handleOrderNow(menuItemId: string) {
+    setOrderingItemId(menuItemId);
+    setIsCheckoutPending(true);
+    setCheckoutError("");
+
+    try {
+      const response = await authenticatedApiRequest("/api/checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [{ menuItemId, quantity: 1 }] }),
+      });
+      const result = (await response.json()) as {
+        checkoutUrl?: string;
+        error?: string;
+      };
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          window.dispatchEvent(new Event("restaurant:sign-in-required"));
+          throw new Error("Sign in to your account before placing an order.");
+        }
+        throw new Error(result.error || "Unable to start checkout.");
+      }
+      if (!result.checkoutUrl) {
+        throw new Error("The checkout service did not return a payment link.");
+      }
+
+      window.location.assign(result.checkoutUrl);
+    } catch (checkoutRequestError) {
+      setCheckoutError(
+        checkoutRequestError instanceof Error
+          ? checkoutRequestError.message
+          : "Unable to start checkout.",
+      );
+      setIsCheckoutPending(false);
+      setOrderingItemId(null);
+    }
+  }
+
   return (
     <main id="menu" className="bg-base-100 px-5 py-20 sm:py-24">
       <div className="section-wrap">
@@ -83,6 +125,11 @@ export function MenuPage(props: Readonly<MenuPageProps>) {
             {error}
           </p>
         )}
+        {checkoutError && (
+          <p className="mb-6 rounded-field bg-error px-4 py-3 text-error-content" role="alert">
+            {checkoutError}
+          </p>
+        )}
         {!isLoading && !error && (
           <div className="flex flex-col gap-12">
             {menu.map((category) => (
@@ -90,6 +137,9 @@ export function MenuPage(props: Readonly<MenuPageProps>) {
                 key={category.title}
                 title={category.title}
                 items={category.items}
+                orderingItemId={orderingItemId}
+                isCheckoutPending={isCheckoutPending}
+                onOrderNow={handleOrderNow}
               />
             ))}
           </div>
