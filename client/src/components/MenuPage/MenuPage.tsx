@@ -5,6 +5,7 @@ import { apiUrl } from "../../lib/api";
 interface MenuCategoryData {
   title: string;
   items: {
+    id: string;
     imgUrl: string;
     imgAlt: string;
     itemName: string;

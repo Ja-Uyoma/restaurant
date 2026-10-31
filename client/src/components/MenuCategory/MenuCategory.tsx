@@ -1,6 +1,7 @@
 import { MenuItem } from "../MenuItem/MenuItem";
 
 interface MenuItemData {
+  id: string;
   imgUrl: string;
   imgAlt: string;
   itemName: string;
@@ -23,8 +24,8 @@ export function MenuCategory(props: Readonly<MenuCategoryProps>) {
       </h3>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {props.items.map((item) => (
-          <MenuItem key={item.itemName} {...item} />
+        {props.items.map(({ id, ...item }) => (
+          <MenuItem key={id} {...item} />
         ))}
       </div>
     </section>
