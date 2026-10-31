@@ -3,7 +3,8 @@
 The project is split into separate packages:
 
 - `client/` — React, Vite, and Tailwind CSS frontend.
-- `server/` — Express API backed by Neon Postgres and Neon Auth.
+- `server/` — Express API backed by local PostgreSQL for development and Neon
+  Postgres/Neon Auth in production.
 - `neon.ts` — Neon service configuration for the linked `production` branch.
 
 ## Local development
@@ -19,12 +20,8 @@ docker compose up -d db
 
 The root `.env.local` contains `LOCAL_DATABASE_URL`, which points the server and
 migrations at this local database. Keep that file private; it is ignored by Git.
-The existing Neon `DATABASE_URL` remains available as a database fallback when
-`LOCAL_DATABASE_URL` is unset, and the Neon Auth settings remain configured for
-local sign-in if you want to use Neon Auth locally. The API can also start
-without `NEON_AUTH_BASE_URL` or `NEON_AUTH_JWKS_URL` when using the local
-database; in that case, its authenticated `/api/me` endpoint returns `503`.
-Provide both Auth settings to enable the endpoint.
+When `LOCAL_DATABASE_URL` is set, local development uses cookie-based local auth
+against PostgreSQL; production continues to use Neon Managed Auth.
 
 Install frontend dependencies and start Vite:
 
@@ -41,23 +38,54 @@ and start Express:
 cd server
 pnpm install
 pnpm migrate
+pnpm seed:local-users
 pnpm dev
 ```
 
 Vite proxies `/api` to Express on `http://localhost:3000`. The menu is read from
 the `menu_categories` and `menu_items` tables; `pnpm migrate` creates and seeds
-them. The server uses `LOCAL_DATABASE_URL` for local requests and migrations.
+them and creates the auth/role tables. `pnpm seed:local-users` creates or resets
+the local demo accounts. The server uses `LOCAL_DATABASE_URL` for local requests and migrations.
 Without that setting, it uses pooled `DATABASE_URL` for requests and prefers
 `DATABASE_URL_UNPOOLED` for migrations.
+
+Local demo accounts:
+
+| Role | Username | Default password |
+| --- | --- | --- |
+| Admin | `admin` | `admin123` |
+| Customer | `customer` | `customer123` |
+
+These are development-only credentials. Override them with
+`LOCAL_AUTH_ADMIN_PASSWORD` and `LOCAL_AUTH_CUSTOMER_PASSWORD` in `.env.local`,
+then rerun `pnpm seed:local-users` to update the stored password hashes. Local
+sign-up creates customer accounts only. Passwords are stored as scrypt hashes;
+the browser session is an HTTP-only cookie. Set `LOCAL_AUTH_SECRET` in
+`.env.local` if local sessions should remain valid after restarting the API.
+Never enable local auth in production.
+
+The API returns each authenticated user's `admin` or `customer` role from the
+`app_user_roles` table. Admin-only and customer-only checks are available at
+`GET /api/admin/check` and `GET /api/customer/check`. Unmapped Neon Auth users
+default to the customer role. To assign a role to a production Neon Auth user,
+use that user's ID from `GET /api/me` and explicitly point the command at the
+production application database:
+
+```sh
+APP_ROLE_DATABASE_URL='postgresql://…' pnpm --dir server set-role neon AUTH_USER_ID admin
+```
+
+The command only accepts an explicit `APP_ROLE_DATABASE_URL` to avoid changing
+the wrong database accidentally.
 
 Stop the local database with `docker compose down`; its named volume keeps the
 database data between starts. To remove the local database and its data, use
 `docker compose down -v`.
 
-The account panel supports Neon Auth email/password sign-up, sign-in, and
-sign-out. Its protected API check obtains a Neon Auth JWT and verifies it in
-Express against the branch JWKS. Authentication currently identifies users but
-does not assign staff/customer roles or restrict staff-only operations.
+The header auth popover uses username/password sign-in for local accounts and
+supports local customer sign-up and sign-out. In production, it uses Neon Auth
+email/password sign-up, sign-in, and sign-out, and Express verifies Neon tokens
+against the branch JWKS.
 
 ## Hosting configuration
 
@@ -71,8 +99,10 @@ The Express host must provide `DATABASE_URL`, `NEON_AUTH_BASE_URL`, and
 the deployed frontend origin so the browser can call the API. Deploy the API
 separately from GitHub Pages. Add the deployed frontend origin (scheme and
 hostname only) to Neon Auth's trusted domains before enabling production
-sign-in. Production does not need `LOCAL_DATABASE_URL`; the server continues to
-use the managed Neon `DATABASE_URL`.
+sign-in. Run `pnpm migrate` against the production `DATABASE_URL` before
+deploying the API so the menu and app-role tables exist. Production does not
+need `LOCAL_DATABASE_URL`; the server continues to use the managed Neon
+`DATABASE_URL`.
 
 Build and start the compiled TypeScript API with `pnpm build` and `pnpm start`
 from `server/`.
