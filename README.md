@@ -44,8 +44,10 @@ pnpm dev
 
 Vite proxies `/api` to Express on `http://localhost:3000`. The menu is read from
 the `menu_categories` and `menu_items` tables; `pnpm migrate` creates and seeds
-them and creates the auth/role tables. `pnpm seed:local-users` creates or resets
-the local demo accounts. The server uses `LOCAL_DATABASE_URL` for local requests and migrations.
+them, creates the auth/role tables, and creates the `orders` and `order_items`
+tables. Each order belongs to a customer and records its payment status; each
+order item snapshots the purchased item name, quantity, and unit price. The
+server uses `LOCAL_DATABASE_URL` for local requests and migrations.
 Without that setting, it uses pooled `DATABASE_URL` for requests and prefers
 `DATABASE_URL_UNPOOLED` for migrations.
 
