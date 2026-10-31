@@ -1,7 +1,7 @@
 {
   "name": "restaurant-neon-config",
   "private": true,
-  "packageManager": "pnpm@10",
+  "packageManager": "pnpm@12.16.1",
   "type": "module",
   "dependencies": {
     "@neon/config": "^1.9.3",

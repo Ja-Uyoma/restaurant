@@ -1,25 +1,26 @@
 {
   "name": "restaurant-server",
   "private": true,
-  "packageManager": "pnpm@10",
+  "packageManager": "pnpm@12.16.1",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node --env-file-if-exists=../.env.local --import tsx --watch index.ts",
+    "dev": "node --env-file-if-exists=.env.local --import tsx --watch index.ts",
     "build": "tsc && mkdir -p dist/migrations && cp -R migrations/. dist/migrations/",
-    "start": "node --env-file-if-exists=../.env.local dist/index.js",
-    "migrate": "node --env-file-if-exists=../.env.local --import tsx migrate.ts",
-    "seed:local-users": "node --env-file-if-exists=../.env.local --import tsx seed-local-users.ts",
-    "set-role": "node --env-file-if-exists=../.env.local --import tsx set-user-role.ts",
+    "start": "node --env-file-if-exists=.env.local dist/index.js",
+    "migrate": "node --env-file-if-exists=.env.local --import tsx migrate.ts",
+    "seed:local-users": "node --env-file-if-exists=.env.local --import tsx seed-local-users.ts",
+    "set-role": "node --env-file-if-exists=.env.local --import tsx set-user-role.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.1.0",
     "jose": "^6.2.13",
-    "pg": "^8.23.1"
+    "pg": "^8.23.1",
+    "stripe": "^18.5.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
