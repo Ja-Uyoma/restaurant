@@ -17,12 +17,12 @@ export function Reservation(props: Readonly<ReservationProps>) {
         <form
           action="/"
           method="post"
-          className="mx-auto grid max-w-4xl gap-5 rounded-box border border-base-300/80 bg-base-200 p-6 shadow-sm sm:grid-cols-2 sm:p-8 lg:grid-cols-4"
+          className="mx-auto grid max-w-4xl justify-items-center gap-5 rounded-box border border-base-300/80 bg-base-200 p-6 text-center shadow-sm sm:grid-cols-2 sm:p-8 lg:grid-cols-4"
         >
-          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+          <label className="flex w-full max-w-md flex-col items-center gap-2 text-sm font-bold text-base-content">
             Name
             <input
-              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content placeholder:text-base-content/45"
+              className="min-h-12 w-full rounded-field border border-base-300 bg-base-100 px-4 text-center text-base font-normal text-base-content placeholder:text-base-content/45"
               type="text"
               name="name"
               id="name"
@@ -30,10 +30,10 @@ export function Reservation(props: Readonly<ReservationProps>) {
             />
           </label>
 
-          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+          <label className="flex w-full max-w-md flex-col items-center gap-2 text-sm font-bold text-base-content">
             Email
             <input
-              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content placeholder:text-base-content/45"
+              className="min-h-12 w-full rounded-field border border-base-300 bg-base-100 px-4 text-center text-base font-normal text-base-content placeholder:text-base-content/45"
               type="email"
               name="email"
               id="email"
@@ -41,20 +41,20 @@ export function Reservation(props: Readonly<ReservationProps>) {
             />
           </label>
 
-          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+          <label className="flex w-full max-w-md flex-col items-center gap-2 text-sm font-bold text-base-content">
             Date
             <input
-              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content"
+              className="min-h-12 w-full rounded-field border border-base-300 bg-base-100 px-4 text-center text-base font-normal text-base-content"
               type="date"
               name="date"
               id="date"
             />
           </label>
 
-          <label className="flex flex-col gap-2 text-sm font-bold text-base-content">
+          <label className="flex w-full max-w-md flex-col items-center gap-2 text-sm font-bold text-base-content">
             Guests
             <input
-              className="min-h-12 rounded-field border border-base-300 bg-base-100 px-4 text-base font-normal text-base-content placeholder:text-base-content/45"
+              className="min-h-12 w-full rounded-field border border-base-300 bg-base-100 px-4 text-center text-base font-normal text-base-content placeholder:text-base-content/45"
               type="number"
               name="guests"
               id="guests"
@@ -66,7 +66,7 @@ export function Reservation(props: Readonly<ReservationProps>) {
 
           <button
             type="submit"
-            className="min-h-13 cursor-pointer rounded-full border-0 bg-primary px-6 py-3 font-bold text-primary-content transition-colors hover:bg-secondary sm:col-span-2 lg:col-span-4"
+            className="min-h-13 w-full max-w-md cursor-pointer rounded-full border-0 bg-primary px-6 py-3 font-bold text-primary-content transition-colors hover:bg-secondary sm:col-span-2 lg:col-span-4"
           >
             Reserve your table
             <span aria-hidden="true" className="ml-2">
