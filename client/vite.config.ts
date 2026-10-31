@@ -9,6 +9,7 @@ const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
+const clientRoot = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, projectRoot, "");
@@ -24,6 +25,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+    cacheDir: path.resolve(clientRoot, ".vite"),
     define: {
       "import.meta.env.VITE_NEON_AUTH_URL": JSON.stringify(authUrl || ""),
       "import.meta.env.VITE_API_BASE_URL": JSON.stringify(
