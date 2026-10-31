@@ -1,6 +1,7 @@
 {
   "name": "restaurant-server",
   "private": true,
+  "packageManager": "pnpm@10",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
