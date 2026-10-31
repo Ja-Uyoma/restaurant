@@ -18,10 +18,11 @@ root:
 docker compose up -d db
 ```
 
-The root `.env.local` contains `LOCAL_DATABASE_URL`, which points the server and
-migrations at this local database. Keep that file private; it is ignored by Git.
-When `LOCAL_DATABASE_URL` is set, local development uses cookie-based local auth
-against PostgreSQL; production continues to use Neon Managed Auth.
+Set `LOCAL_DATABASE_URL` in both `server/.env.local` and `client/.env.local` to
+point the API, migrations, and local auth at this database. Keep these files
+private; they are ignored by Git. When `LOCAL_DATABASE_URL` is set, local
+development uses cookie-based local auth against PostgreSQL; production
+continues to use Neon Managed Auth.
 
 Install frontend dependencies and start Vite:
 
@@ -59,11 +60,12 @@ Local demo accounts:
 | Customer | `customer` | `customer123` |
 
 These are development-only credentials. Override them with
-`LOCAL_AUTH_ADMIN_PASSWORD` and `LOCAL_AUTH_CUSTOMER_PASSWORD` in `.env.local`,
-then rerun `pnpm seed:local-users` to update the stored password hashes. Local
-sign-up creates customer accounts only. Passwords are stored as scrypt hashes;
-the browser session is an HTTP-only cookie. Set `LOCAL_AUTH_SECRET` in
-`.env.local` if local sessions should remain valid after restarting the API.
+`LOCAL_AUTH_ADMIN_PASSWORD` and `LOCAL_AUTH_CUSTOMER_PASSWORD` in
+`server/.env.local`, then rerun `pnpm seed:local-users` to update the stored
+password hashes. Local sign-up creates customer accounts only. Passwords are
+stored as scrypt hashes; the browser session is an HTTP-only cookie. Set
+`LOCAL_AUTH_SECRET` in `server/.env.local` if local sessions should remain valid
+after restarting the API.
 Never enable local auth in production.
 
 The API returns each authenticated user's `admin` or `customer` role from the
@@ -89,6 +91,37 @@ supports local customer sign-up and sign-out. In production, it uses Neon Auth
 email/password sign-up, sign-in, and sign-out, and Express verifies Neon tokens
 against the branch JWKS.
 
+## Local Stripe checkout
+
+The API creates Checkout Sessions only for signed-in users. The request accepts
+up to 20 unique menu item IDs with quantities from 1 to 20; prices and item
+names are read from the database.
+The menu API includes each available item's `id` for building a cart. For
+example, send `POST /api/checkout-session` with
+`{"items":[{"menuItemId":"1","quantity":2}]}` while authenticated. A successful
+response contains `orderId` and `checkoutUrl`.
+
+Add your Stripe **test-mode** secret key and webhook secret to
+`server/.env.local`. The local client URL defaults to `http://localhost:5173`;
+set `CLIENT_BASE_URL` there only if your Vite server uses a different address.
+
+```sh
+STRIPE_SECRET_KEY=sk_test_...
+CLIENT_BASE_URL=http://localhost:5173
+```
+
+In another terminal, forward Stripe events to the local API:
+
+```sh
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
+```
+
+Copy the `whsec_...` value printed by Stripe CLI into `.env.local` as
+`STRIPE_WEBHOOK_SECRET`, then restart the API. Sign in, create a checkout
+session, and open the returned `checkoutUrl`. Complete the payment with Stripe's
+test card `4242 4242 4242 4242`, any future expiration date, and any CVC. Only a
+valid signed webhook for a paid session changes an order's status to `paid`.
+
 ## Hosting configuration
 
 The frontend GitHub Pages workflow reads these repository Actions variables:
@@ -97,8 +130,10 @@ The frontend GitHub Pages workflow reads these repository Actions variables:
 - `RESTAURANT_API_URL` — the deployed Express API origin, without a trailing slash.
 
 The Express host must provide `DATABASE_URL`, `NEON_AUTH_BASE_URL`, and
-`NEON_AUTH_JWKS_URL`. Set `CLIENT_ORIGINS` to a comma-separated list containing
-the deployed frontend origin so the browser can call the API. Deploy the API
+`NEON_AUTH_JWKS_URL`, plus `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and
+`CLIENT_BASE_URL` to enable checkout and its Stripe webhook in production. Set
+`CLIENT_ORIGINS` to a comma-separated list containing the deployed frontend
+origin so the browser can call the API. Deploy the API
 separately from GitHub Pages. Add the deployed frontend origin (scheme and
 hostname only) to Neon Auth's trusted domains before enabling production
 sign-in. Run `pnpm migrate` against the production `DATABASE_URL` before
